@@ -2,6 +2,10 @@ import {Link, usePage} from '@inertiajs/react';
 
 export default function AuthenticatedLayout({children}) {
     const user = usePage().props.auth.user;
+    const userRole = {
+        student: 'Estudiante',
+        professor: 'Profesor'
+    }[user.role];
 
     return (
         <div>
@@ -15,7 +19,7 @@ export default function AuthenticatedLayout({children}) {
                     </li>
                 </ul>
                 <div>
-                    <Link href={route('profile.edit')}>{user.name}</Link>
+                    <Link href={route('profile.edit')}>{user.name} - {userRole}</Link>
                     <Link href={route('logout')} method="post" as="button">Cerrar sesión</Link>
                 </div>
             </nav>
