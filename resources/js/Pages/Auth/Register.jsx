@@ -4,6 +4,7 @@ export default function Register() {
     const {data, setData, post, processing, errors, reset} = useForm({
         name: '',
         email: '',
+        role: '',
         password: '',
         password_confirmation: '',
     });
@@ -44,6 +45,21 @@ export default function Register() {
                         onChange={(e) => setData('email', e.target.value)}
                         required/>
                     {errors.email && <div>{errors.email}</div>}
+                </div>
+
+                <div>
+                    <label htmlFor="role">Rol</label>
+                    <select
+                        id="role"
+                        name="role"
+                        value={data.role}
+                        onChange={(e) => setData('role', e.target.value)}
+                        required>
+                        <option value="" disabled>Selecciona un rol</option>
+                        <option value="student">Estudiante</option>
+                        <option value="professor">Profesor</option>
+                    </select>
+                    {errors.role && <div>{errors.role}</div>}
                 </div>
 
                 <div>

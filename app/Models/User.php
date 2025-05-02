@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +45,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if the user is a student.
+     *
+     * @return bool
+     */
+    public function isStudent(): bool
+    {
+        return $this->role === 'student';
+    }
+
+    /**
+     * Check if the user is a professor.
+     *
+     * @return bool
+     */
+    public function isProfessor(): bool
+    {
+        return $this->role === 'professor';
     }
 }
