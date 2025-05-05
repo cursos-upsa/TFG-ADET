@@ -68,5 +68,11 @@ class SubjectController extends Controller
         // Update the subject with the given id.
     }
 
+    public function destroy(string $id)
+    {
+        Subject::destroy($id);
 
+        return redirect()->route('subjects.index')
+            ->with('success', 'Asignatura eliminada correctamente.');
+    }
 }
