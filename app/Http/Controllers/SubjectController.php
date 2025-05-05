@@ -10,10 +10,17 @@ use Inertia\Inertia;
 
 class SubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Render all the subjects of the user here.
-        return Inertia::render('Subjects');
+        $justUserSubjects = $request->query('user') === 'true';
+
+        $subjects = $justUserSubjects ?
+            Subject::where('user_id', $request->user()->id)->get() :
+            Subject::all();
+
+        return Inertia::render('Subjects', [
+            'subjects' => $subjects
+        ]);
     }
 
     public function show(string $id)
