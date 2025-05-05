@@ -60,7 +60,7 @@ class SubjectController extends Controller
         $subject_id = $subject->id;
         $user_id = $subject->user_id;
 
-        // TODO: crear una entrada en `users_per_subject`.
+        // TODO: crear una entrada en `subject_user`.
 
         // Redirect to the subjects page.
         return redirect()->route('subjects.index');
