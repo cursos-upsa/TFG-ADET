@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
 
 class Subject extends Model
@@ -15,6 +16,11 @@ class Subject extends Model
         'extra_instructions',
         'user_id',
     ];
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 
     protected static function booted(): void
     {
