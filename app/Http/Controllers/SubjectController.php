@@ -6,7 +6,6 @@ use App\Models\Subject;
 use App\Services\OpenAIAssistantService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class SubjectController extends Controller
@@ -57,12 +56,10 @@ class SubjectController extends Controller
             'description' => $validatedData['description'],
             'extra_instructions' => $validatedData['extra_instructions'],
         ]);
-        $subject_id = $subject->id;
-        $user_id = $subject->user_id;
+        // Associate the user (professor) with the subject he just created.
+        $user = $request->user();
+        $user->subjects()->attach($subject->id);
 
-        // TODO: crear una entrada en `subject_user`.
-
-        // Redirect to the subjects page.
         return redirect()->route('subjects.index');
     }
 
