@@ -41,7 +41,7 @@ export default function UpdatePasswordForm() {
 
     return (
         <section>
-            <h2>Actualizar Contraseña</h2>
+            <h2>Actualizar contraseña</h2>
             <p>Asegúrate de que tu cuenta esté utilizando una contraseña larga y aleatoria para mantenerla segura.</p>
 
             <form onSubmit={updatePassword}>

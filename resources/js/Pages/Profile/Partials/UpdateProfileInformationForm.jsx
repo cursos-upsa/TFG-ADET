@@ -16,13 +16,14 @@ export default function UpdateProfileInformation({mustVerifyEmail, status}) {
 
     return (
         <section>
-            <h2>Información del Perfil</h2>
+            <h2>Información del perfil</h2>
             <p>Actualiza la información del perfil y la dirección de correo electrónico de tu cuenta.</p>
 
             <form onSubmit={submit}>
                 <div>
                     <label htmlFor="name">Nombre</label>
                     <input id="name"
+                           type={"text"}
                            value={data.name}
                            onChange={(e) => setData('name', e.target.value)}
                            required

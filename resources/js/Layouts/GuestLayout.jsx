@@ -3,12 +3,16 @@ import {Link} from '@inertiajs/react';
 export default function GuestLayout({children}) {
     return (
         <div>
-            <div>
-                <Link href="/">Inicio</Link>
-            </div>
-            <div>
+            <nav>
+                <ul>
+                    <li>
+                        <Link href="/">Inicio</Link>
+                    </li>
+                </ul>
+            </nav>
+            <main>
                 {children}
-            </div>
+            </main>
         </div>
     );
 }

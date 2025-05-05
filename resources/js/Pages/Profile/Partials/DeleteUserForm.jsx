@@ -40,7 +40,7 @@ export default function DeleteUserForm() {
 
     return (
         <section>
-            <h2>Eliminar Cuenta</h2>
+            <h2>Eliminar cuenta</h2>
             <p>
                 Una vez que tu cuenta sea eliminada, todos sus recursos y datos
                 serán eliminados permanentemente. Antes de eliminar tu cuenta,
@@ -49,7 +49,7 @@ export default function DeleteUserForm() {
             </p>
 
             <button onClick={confirmUserDeletion}>
-                Eliminar Cuenta
+                Eliminar cuenta
             </button>
 
             {confirmingUserDeletion &&
@@ -89,7 +89,7 @@ export default function DeleteUserForm() {
                                 </button>
 
                                 <button disabled={processing}>
-                                    Eliminar Cuenta
+                                    Eliminar cuenta
                                 </button>
                             </div>
                         </form>

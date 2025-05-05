@@ -26,6 +26,7 @@ export default function Register() {
                     <label htmlFor="name">Nombre</label>
                     <input
                         id="name"
+                        type="text"
                         name="name"
                         value={data.name}
                         autoComplete="name"

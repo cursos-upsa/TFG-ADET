@@ -17,13 +17,18 @@ export default function AuthenticatedLayout({children}) {
                     <li>
                         <Link href={route('dashboard')}>Panel de control</Link>
                     </li>
+                    <li>
+                        <Link href={route('subjects.index')}>Asignaturas</Link>
+                    </li>
                 </ul>
                 <div>
                     <Link href={route('profile.edit')}>{user.name} - {userRole}</Link>
                     <Link href={route('logout')} method="post" as="button">Cerrar sesión</Link>
                 </div>
             </nav>
-            {children}
+            <main>
+                {children}
+            </main>
         </div>
     );
 }
