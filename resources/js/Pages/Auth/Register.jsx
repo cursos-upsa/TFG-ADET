@@ -1,4 +1,5 @@
 import {Head, Link, useForm} from '@inertiajs/react';
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
 export default function Register() {
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -17,7 +18,7 @@ export default function Register() {
     };
 
     return (
-        <div>
+        <GuestLayout>
             <Head title="Registro"/>
 
             <form onSubmit={submit}>
@@ -97,6 +98,6 @@ export default function Register() {
                     </button>
                 </div>
             </form>
-        </div>
+        </GuestLayout>
     );
 }

@@ -1,8 +1,9 @@
 import {Head, Link} from '@inertiajs/react';
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
 export default function Welcome({auth, canLogin, canRegister}) {
     return (
-        <>
+        <GuestLayout>
             <Head title="Bienvenido"/>
             <header>
                 <nav>
@@ -35,6 +36,6 @@ export default function Welcome({auth, canLogin, canRegister}) {
             <footer>
                 Breeze sin Tailwind CSS
             </footer>
-        </>
+        </GuestLayout>
     );
 }

@@ -1,4 +1,5 @@
 import {Head, useForm} from '@inertiajs/react';
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
 export default function ForgotPassword({status}) {
     const {data, setData, post, processing, errors} = useForm({
@@ -11,7 +12,7 @@ export default function ForgotPassword({status}) {
     };
 
     return (
-        <div>
+        <GuestLayout>
             <Head title="Contraseña olvidada"/>
 
             <div>
@@ -44,6 +45,6 @@ export default function ForgotPassword({status}) {
                     </button>
                 </div>
             </form>
-        </div>
+        </GuestLayout>
     );
 }

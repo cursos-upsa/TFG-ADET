@@ -1,4 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,7 +14,7 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <div>
+        <GuestLayout>
             <Head title="Confirmar contraseña" />
 
             <div>
@@ -45,6 +46,6 @@ export default function ConfirmPassword() {
                     </button>
                 </div>
             </form>
-        </div>
+        </GuestLayout>
     );
 }

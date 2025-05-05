@@ -1,4 +1,5 @@
 import {Head, useForm} from '@inertiajs/react';
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
 export default function ResetPassword({token, email}) {
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -16,7 +17,7 @@ export default function ResetPassword({token, email}) {
     };
 
     return (
-        <div>
+        <GuestLayout>
             <Head title="Restablecer contraseña"/>
             <form onSubmit={submit}>
                 <input type="hidden" name="token" value={data.token}/>
@@ -63,6 +64,6 @@ export default function ResetPassword({token, email}) {
                     </button>
                 </div>
             </form>
-        </div>
+        </GuestLayout>
     );
 }

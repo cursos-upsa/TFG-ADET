@@ -1,4 +1,5 @@
 import {Head, Link, useForm} from '@inertiajs/react';
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
 export default function VerifyEmail({status}) {
     const {post, processing} = useForm({});
@@ -9,7 +10,7 @@ export default function VerifyEmail({status}) {
     };
 
     return (
-        <div>
+        <GuestLayout>
             <Head title="Verificación de correo electrónico"/>
 
             <div>
@@ -37,6 +38,6 @@ export default function VerifyEmail({status}) {
                     </Link>
                 </div>
             </form>
-        </div>
+        </GuestLayout>
     );
 }
