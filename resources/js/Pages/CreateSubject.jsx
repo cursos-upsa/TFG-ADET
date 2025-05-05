@@ -42,7 +42,8 @@ const CreateSubject = () => {
                     Archivos de contexto:
                     <input type="file"
                            name="file"
-                           onChange={(e) => setData('files', e.target.files)}/>
+                           onChange={(e) => setData('files', e.target.files)}
+                           multiple/>
                 </label>
                 <button type="submit" disabled={processing}>
                     Crear asignatura
