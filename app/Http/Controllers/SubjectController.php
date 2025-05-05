@@ -75,11 +75,16 @@ class SubjectController extends Controller
         // Update the subject with the given id.
     }
 
-    public function destroy(string $id)
+    /**
+     * @throws Exception
+     */
+    public function destroy(string $id, OpenAIAssistantService $assistantService)
     {
-        Subject::destroy($id);
+        $subject = Subject::find($id);
 
-        return redirect()->route('subjects.index')
-            ->with('success', 'Asignatura eliminada correctamente.');
+        $assistantService->deleteAssistant($subject->assistant_id);
+        $subject->delete();
+
+        return redirect()->route('subjects.index');
     }
 }

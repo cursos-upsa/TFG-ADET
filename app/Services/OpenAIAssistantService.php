@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use ErrorException;
 use Exception;
 use OpenAI\Client;
 
@@ -71,6 +72,22 @@ class OpenAIAssistantService
             return $response->id;
         } catch (Exception $e) {
             throw new Exception("Error al crear el asistente para la asignatura \"$name\"");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteAssistant(string $assistantId): void
+    {
+        try {
+            $response = $this->client->assistants()->delete(
+                $assistantId
+            );
+            if (!$response->deleted)
+                throw new ErrorException();
+        } catch (Exception $e) {
+            throw new Exception("Error al eliminar el asistente el asistente \"{$assistantId}\"");
         }
     }
 
