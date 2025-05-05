@@ -59,6 +59,7 @@ class SubjectController extends Controller
         );
         $subject = Subject::create([
             'assistant_id' => $assistantId,
+            'vector_store_id' => null,
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
             'extra_instructions' => $validatedData['extra_instructions'],

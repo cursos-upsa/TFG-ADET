@@ -11,6 +11,7 @@ class Subject extends Model
 
     protected $fillable = [
         'assistant_id',
+        'vector_store_id',
         'name',
         'description',
         'extra_instructions',

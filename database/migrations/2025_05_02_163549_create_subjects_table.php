@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->string('assistant_id');
+            $table->string('vector_store_id')->nullable();
             $table->string('name')->unique();
             $table->text('description');
             $table->text('extra_instructions')->nullable();
