@@ -18,7 +18,7 @@ class SubjectController extends Controller
             Subject::where('user_id', $request->user()->id)->get() :
             Subject::all();
 
-        return Inertia::render('Subjects', [
+        return Inertia::render('Subjects/Subjects', [
             'subjects' => $subjects
         ]);
     }
@@ -31,7 +31,7 @@ class SubjectController extends Controller
     public function create()
     {
         // Render the form to create a new subject.
-        return Inertia::render('CreateSubject');
+        return Inertia::render('Subjects/CreateSubject');
     }
 
     public function edit(string $id)

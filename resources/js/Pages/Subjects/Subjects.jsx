@@ -23,7 +23,7 @@ const Subjects = ({subjects}) => {
             <ul>
                 {subjects.map((subject) => (
                     <li key={subject.id}>
-                        <b>{subject.name}</b> – {subject.description}
+                        <b>{subject.name}</b> {subject.description}
                         <button onClick={() => deleteSubject(subject.id)}>Eliminar</button>
                     </li>
                 ))}
