@@ -26,14 +26,10 @@ class OpenAIFilesService
 
         try {
             foreach ($uploadedFiles as $file) {
-                // Get the original filename and extension
-                $originalName = $file->getClientOriginalName();
-
                 // Create a unique temporary file with the original filename to preserve the extension
+                $originalName = $file->getClientOriginalName();
                 $tempPath = tempnam(sys_get_temp_dir(), 'openai_upload_');
                 $tempPathWithExt = $tempPath . '_' . $originalName;
-
-                // Copy the file content to the temporary file
                 copy($file->getRealPath(), $tempPathWithExt);
 
                 // Upload the file with the correct extension
@@ -43,12 +39,8 @@ class OpenAIFilesService
                 ]);
 
                 // Clean up the temporary files
-                if (file_exists($tempPath)) {
-                    unlink($tempPath);
-                }
-                if (file_exists($tempPathWithExt)) {
-                    unlink($tempPathWithExt);
-                }
+                if (file_exists($tempPath)) unlink($tempPath);
+                if (file_exists($tempPathWithExt)) unlink($tempPathWithExt);
 
                 $openAIFileIds[] = $response->id;
             }

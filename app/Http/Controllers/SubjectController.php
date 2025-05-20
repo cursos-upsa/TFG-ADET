@@ -50,7 +50,7 @@ class SubjectController extends Controller
             'description' => ['required', 'string', 'max:255'],
             'extra_instructions' => ['nullable', 'string', 'max:255'],
 
-            'files' => ['nullable', 'array', 'max:5'],
+            'files' => ['nullable', 'array', 'max:10'],
             'files.*' => [
                 'file',
                 'max:20971520', // 20 MB
