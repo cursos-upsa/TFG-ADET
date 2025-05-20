@@ -8,6 +8,7 @@ use App\Services\OpenAIFilesService;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SubjectController extends Controller
 {
@@ -26,12 +27,20 @@ class SubjectController extends Controller
 
     public function show(string $id)
     {
-        // Show the subject with the given id.
+        $subject = Subject::find($id);
+
+        if (!$subject)
+            throw new NotFoundHttpException();
+
+        return Inertia::render('Subjects/SubjectShow', [
+            'name'        => $subject->name,
+            'description' => $subject->description,
+            'created_at'  => $subject->created_at->format('d/m/Y H:i'),
+        ]);
     }
 
     public function create()
     {
-        // Render the form to create a new subject.
         return Inertia::render('Subjects/CreateSubject');
     }
 
@@ -46,11 +55,11 @@ class SubjectController extends Controller
     public function store(Request $request, OpenAIAssistantService $assistantService, OpenAIFilesService $filesService)
     {
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
+            'name'               => ['required', 'string', 'max:255'],
+            'description'        => ['required', 'string', 'max:255'],
             'extra_instructions' => ['nullable', 'string', 'max:255'],
 
-            'files' => ['nullable', 'array', 'max:10'],
+            'files'   => ['nullable', 'array', 'max:10'],
             'files.*' => [
                 'file',
                 'max:20971520', // 20 MB
@@ -67,10 +76,10 @@ class SubjectController extends Controller
             vectorStoreId: $vectorStoreId,
         );
         $subject = Subject::create([
-            'assistant_id' => $assistantId,
-            'vector_store_id' => $vectorStoreId,
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
+            'assistant_id'       => $assistantId,
+            'vector_store_id'    => $vectorStoreId,
+            'name'               => $validatedData['name'],
+            'description'        => $validatedData['description'],
             'extra_instructions' => $validatedData['extra_instructions'],
         ]);
         // Associate the user (professor) with the subject he just created.

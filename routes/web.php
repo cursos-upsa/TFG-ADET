@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/create', [SubjectController::class, 'create'])->name('create');
         Route::post('/store', [SubjectController::class, 'store'])->name('store');
 
+        Route::get('/{subjectId}', [SubjectController::class, 'show'])->name('show');
         Route::delete('/{subjectId}', [SubjectController::class, 'destroy'])->name('destroy');
     });
 });

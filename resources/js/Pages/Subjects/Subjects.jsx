@@ -3,6 +3,10 @@ import {Head, Link, router} from "@inertiajs/react";
 
 const Subjects = ({subjects}) => {
 
+    const showSubject = (subjectId) => {
+        router.get(route('subjects.show', {subjectId}))
+    }
+
     const deleteSubject = (subjectId) => {
         if (confirm('¿Estás seguro de que quieres eliminar esta asignatura?')) {
             router.delete(route('subjects.destroy', {subjectId}))
@@ -22,7 +26,7 @@ const Subjects = ({subjects}) => {
 
             <ul>
                 {subjects.map((subject) => (
-                    <li key={subject.id}>
+                    <li key={subject.id} onClick={() => showSubject(subject.id)}>
                         <b>{subject.name}</b> {subject.description}
                         <button onClick={() => deleteSubject(subject.id)}>Eliminar</button>
                     </li>
