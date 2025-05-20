@@ -88,11 +88,13 @@ class SubjectController extends Controller
     /**
      * @throws Exception
      */
-    public function destroy(string $id, OpenAIAssistantService $assistantService)
+    public function destroy(string $id, OpenAIAssistantService $assistantService, OpenAIFilesService $filesService)
     {
         $subject = Subject::find($id);
 
         $assistantService->deleteAssistant($subject->assistant_id);
+        $filesService->deleteFiles($subject->vector_store_id);
+        $filesService->deleteVectorStore($subject->vector_store_id);
         $subject->delete();
 
         return redirect()->route('subjects.index');

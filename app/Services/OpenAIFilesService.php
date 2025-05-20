@@ -39,7 +39,7 @@ class OpenAIFilesService
                 // Upload the file with the correct extension
                 $response = $this->client->files()->upload([
                     'purpose' => 'assistants',
-                    'file' => fopen($tempPathWithExt, 'rb'),
+                    'file'    => fopen($tempPathWithExt, 'rb'),
                 ]);
 
                 // Clean up the temporary files
@@ -69,7 +69,7 @@ class OpenAIFilesService
 
         try {
             $response = $this->client->vectorStores()->create([
-                'name' => $vectorStoreName,
+                'name'     => $vectorStoreName,
                 'file_ids' => $openaiFileIds,
             ]);
             return $response->id;
@@ -88,6 +88,23 @@ class OpenAIFilesService
             $this->client->vectorStores()->delete($vectorStoreId);
         } catch (Exception $e) {
             throw new Exception("Error al eliminar el vector store \"$vectorStoreId\".");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteFiles(string $vectorStoreId): void
+    {
+        try {
+            $filesResponse = $this->client->vectorStores()->files()->list(
+                vectorStoreId: $vectorStoreId
+            );
+
+            foreach ($filesResponse->data as $fileObj)
+                $this->client->files()->delete($fileObj->id);
+        } catch (Exception $e) {
+            throw new Exception("Error al eliminar los archivos del vector store con ID: $vectorStoreId");
         }
     }
 
