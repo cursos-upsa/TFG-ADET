@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Services\OpenAIAssistantService;
+use App\Services\OpenAIFilesService;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -42,7 +43,7 @@ class SubjectController extends Controller
     /**
      * @throws Exception
      */
-    public function store(Request $request, OpenAIAssistantService $assistantService)
+    public function store(Request $request, OpenAIAssistantService $assistantService, OpenAIFilesService $filesService)
     {
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -50,16 +51,24 @@ class SubjectController extends Controller
             'extra_instructions' => ['nullable', 'string', 'max:255'],
 
             'files' => ['nullable', 'array', 'max:5'],
-            'files.*' => ['file', 'max:1024', 'mimes:pdf,txt,csv']
+            'files.*' => [
+                'file',
+                'max:20971520', // 20 MB
+                'mimes:c,cpp,cs,css,doc,docx,go,html,java,js,json,md,pdf,php,pptx,py,rb,sh,tex,ts,txt'
+            ]
         ]);
+
+        $fileIds = $filesService->uploadFiles($validatedData['files']);
+        $vectorStoreId = $filesService->createVectorStore($validatedData['name'], $fileIds);
 
         $assistantId = $assistantService->createAssistant(
             name: $validatedData['name'],
             extraInstructions: $validatedData['extra_instructions'],
+            vectorStoreId: $vectorStoreId,
         );
         $subject = Subject::create([
             'assistant_id' => $assistantId,
-            'vector_store_id' => null,
+            'vector_store_id' => $vectorStoreId,
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
             'extra_instructions' => $validatedData['extra_instructions'],

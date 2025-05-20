@@ -57,17 +57,27 @@ class OpenAIAssistantService
     /**
      * @throws Exception
      */
-    public function createAssistant(string $name, ?string $extraInstructions, array $files = []): string
+    public function createAssistant(string $name, ?string $extraInstructions, ?string $vectorStoreId): string
     {
         $instructions = $this->getBaseInstructions($name, $extraInstructions);
 
+        $params = [
+            'name' => $name,
+            'instructions' => $instructions,
+            'model' => self::OPENAI_MODEL,
+            'tools' => [['type' => 'file_search']],
+        ];
+
+        if ($vectorStoreId) {
+            $params['tool_resources'] = [
+                'file_search' => [
+                    'vector_store_ids' => [$vectorStoreId],
+                ],
+            ];
+        }
+
         try {
-            $response = $this->client->assistants()->create([
-                'name' => $name,
-                'instructions' => $instructions,
-                'model' => self::OPENAI_MODEL,
-                //'file_ids' => $files,
-            ]);
+            $response = $this->client->assistants()->create($params);
 
             return $response->id;
         } catch (Exception $e) {
