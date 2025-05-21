@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
 
 const CreateSubject = () => {
-    const {data, setData, post, processing, progress, errors} = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         name: '',
         description: '',
         extra_instructions: '',
@@ -49,11 +49,6 @@ const CreateSubject = () => {
                     Crear asignatura
                 </button>
                 <output>
-                    {progress && (
-                        <progress value={progress.percentage} max="100">
-                            {progress.percentage}%
-                        </progress>
-                    )}
                     {errors && (
                         <ul>
                             {Object.entries(errors).map(([key, value]) => (
