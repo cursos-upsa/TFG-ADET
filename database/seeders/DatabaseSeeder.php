@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Subject;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -39,5 +40,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Student Three',
             'email' => 'student3@example.com',
         ]);
+
+        // Create a subject with 3 chats
+        Subject::factory()
+            ->count(1)
+            ->hasChats(3)
+            ->create();
     }
 }
