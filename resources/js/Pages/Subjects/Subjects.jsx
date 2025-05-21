@@ -7,7 +7,9 @@ const Subjects = ({subjects}) => {
         router.get(route('subjects.show', {subjectId}))
     }
 
-    const deleteSubject = (subjectId) => {
+    const deleteSubject = (e, subjectId) => {
+        e.stopPropagation();  // Avoid triggering the parent's <li> click event.
+
         if (confirm('¿Estás seguro de que quieres eliminar esta asignatura?')) {
             router.delete(route('subjects.destroy', {subjectId}))
         }
@@ -28,7 +30,7 @@ const Subjects = ({subjects}) => {
                 {subjects.map((subject) => (
                     <li key={subject.id} onClick={() => showSubject(subject.id)}>
                         <b>{subject.name}</b> {subject.description}
-                        <button onClick={() => deleteSubject(subject.id)}>Eliminar</button>
+                        <button onClick={(e) => { deleteSubject(e, subject.id); }}>Eliminar</button>
                     </li>
                 ))}
             </ul>
