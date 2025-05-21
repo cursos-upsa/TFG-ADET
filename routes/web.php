@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -29,6 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/{subjectId}', [SubjectController::class, 'show'])->name('show');
         Route::delete('/{subjectId}', [SubjectController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::name('chats.')->prefix('chats')->group(function () {
+        Route::get('/{chatId}', [ChatController::class, 'show'])->name('show');
     });
 });
 

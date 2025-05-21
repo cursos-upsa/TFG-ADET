@@ -1,14 +1,19 @@
-import {Head} from "@inertiajs/react";
+import {Deferred, Head} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import Loader from "@/Components/Loader.jsx";
+import Chats from "@/Pages/Subjects/Partials/Chats.jsx";
 
-const Subject = ({name, description, created_at}) => {
+const Subject = ({name, description, created_at, chats}) => {
     return (
         <AuthenticatedLayout>
             <Head title={name}/>
-
             <h1>{name}</h1>
             <p><small>Creación: {created_at}</small></p>
             <p>{description}</p>
+
+            <Deferred fallback={<Loader>Cargando los chats...</Loader>} data={"chats"}>
+                <Chats chats={chats}/>
+            </Deferred>
         </AuthenticatedLayout>
     );
 };

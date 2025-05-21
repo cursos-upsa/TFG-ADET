@@ -36,6 +36,7 @@ class SubjectController extends Controller
             'name'        => $subject->name,
             'description' => $subject->description,
             'created_at'  => $subject->created_at->format('d/m/Y H:i'),
+            'chats'       => Inertia::defer(fn () => $subject->chats()->get()),
         ]);
     }
 
