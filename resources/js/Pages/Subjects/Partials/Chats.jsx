@@ -1,12 +1,13 @@
 import {Link} from "@inertiajs/react";
 
-const Chats = ({chats}) => {
-    console.log(chats);
+const Chats = ({chats, subjectId}) => {
 
     return (
         <div>
             <h3>Chats</h3>
-            <button>Crear nuevo chat</button>
+            <Link href={route('chats.create', {subjectId})}>
+                <button>Crear nuevo chat</button>
+            </Link>
             {chats.length === 0 ?
                 <p>Aún no tiene ningún chat en esta asignatura.</p> :
                 <ul>

@@ -32,6 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::name('chats.')->prefix('chats')->group(function () {
+        Route::get('/create/{subjectId}', [ChatController::class, 'create'])->name('create');
+
         Route::get('/{chatId}', [ChatController::class, 'show'])->name('show');
     });
 });
