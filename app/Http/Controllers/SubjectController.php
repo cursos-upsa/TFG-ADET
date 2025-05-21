@@ -32,7 +32,7 @@ class SubjectController extends Controller
         if (!$subject)
             throw new NotFoundHttpException();
 
-        return Inertia::render('Subjects/SubjectShow', [
+        return Inertia::render('Subjects/Subject', [
             'name'        => $subject->name,
             'description' => $subject->description,
             'created_at'  => $subject->created_at->format('d/m/Y H:i'),

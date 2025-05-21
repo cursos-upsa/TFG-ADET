@@ -1,7 +1,7 @@
 import {Head} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 
-const SubjectShow = ({name, description, created_at}) => {
+const Subject = ({name, description, created_at}) => {
     return (
         <AuthenticatedLayout>
             <Head title={name}/>
@@ -13,4 +13,4 @@ const SubjectShow = ({name, description, created_at}) => {
     );
 };
 
-export default SubjectShow;
+export default Subject;
