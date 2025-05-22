@@ -2,10 +2,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import Loader from "@/Components/Loader.jsx";
 
-const Chat = ({subjectName, threadId, messages, newChat = false}) => {
+const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => {
     const {data, setData, post, processing} = useForm({
+        subjectId: subjectId,
         threadId: threadId,
-        message: '',
+        messages: messages,
+        newUserMessage: '',
     })
 
     function submit(e) {
@@ -24,17 +26,23 @@ const Chat = ({subjectName, threadId, messages, newChat = false}) => {
                 <>
                     <h3>Chat para la asignatura <i>{subjectName}</i>.</h3>
                     <Deferred fallback={<Loader>Cargando conversación...</Loader>} data={"messages"}>
-                        {JSON.stringify(messages)}
+                        {messages.map((message, index) => {
+                                if (index % 2 === 0) {
+                                    return <p key={index}><strong>{message}</strong></p>;
+                                }
+                                return <p key={index}>{message}</p>;
+                            }
+                        )}
                     </Deferred>
                 </>
             )}
             <hr/>
             <form onSubmit={submit}>
                 <label>
-                    <textarea name={"message"}
+                    <textarea name={"newUserMessage"}
                               placeholder={"Escribe aquí tu mensaje..."}
-                              value={data.message}
-                              onChange={(e) => setData('message', e.target.value)}/>
+                              value={data.newUserMessage}
+                              onChange={(e) => setData('newUserMessage', e.target.value)}/>
                 </label>
                 <button type={"submit"} disabled={processing}>
                     Enviar

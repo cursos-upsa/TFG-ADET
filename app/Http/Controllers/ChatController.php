@@ -21,9 +21,10 @@ class ChatController extends Controller
             throw new NotFoundHttpException();
 
         return Inertia::render('Chats/Chat', [
+            'subjectId'   => $subject->id,
             'subjectName' => $subject->name,
             'threadId'    => $chat->thread_id,
-            'messages'    => fn () => [],
+            'messages'    => fn() => [],
         ]);
     }
 
@@ -46,6 +47,7 @@ class ChatController extends Controller
         ]);
 
         return Inertia::render('Chats/Chat', [
+            'subjectId'   => $subject->id,
             'subjectName' => $subject->name,
             'threadId'    => $chat->thread_id,
             'messages'    => [],
@@ -59,10 +61,28 @@ class ChatController extends Controller
     public function store(Request $request, OpenAIChatService $chatService)
     {
         $validatedData = $request->validate([
-            'threadId' => ['required', 'int'],
-            'message'  => ['required', 'string', 'max:10000'],
+            'messages'  => ['array', 'max:100'],
+            'subjectId' => ['required', 'int'],
+            'threadId'  => ['required', 'string'],
+            'newUserMessage'   => ['required', 'string', 'max:10000'],
         ]);
+        $subject = Subject::find($validatedData['subjectId']);
 
-        // TODO: Send request to OpenAI API to send the message to the thread.
+        $messageId = $chatService->createMessage(
+            thread_id: $validatedData['threadId'],
+            userMessage: $validatedData['newUserMessage']
+        );
+        $message = $chatService->executeRunAndGetResponseStream(
+            thread_id: $validatedData['threadId'],
+            assistant_id: $subject->assistant_id
+        );
+        $messages = array_merge($validatedData['messages'], [$validatedData['newUserMessage'], $message]);
+
+        return Inertia::render('Chats/Chat', [
+            'subjectId'   => $subject->id,
+            'subjectName' => $subject->name,
+            'threadId'    => $validatedData['threadId'],
+            'messages'    => $messages
+        ]);
     }
 }
