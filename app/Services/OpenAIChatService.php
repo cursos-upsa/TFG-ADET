@@ -17,11 +17,33 @@ class OpenAIChatService
     /**
      * @throws Exception
      */
+    public function getMessages(string $thread_id): array
+    {
+        $messages = [];
+
+        try {
+            $request = $this->cliente->threads()->messages()->list($thread_id, [
+                "order" => "asc",
+                "limit" => 100,
+            ]);
+
+            foreach ($request->data as $result)
+                $messages[] = self::getMessageText($result->content);
+
+            return $messages;
+        } catch (Exception $e) {
+            throw new Exception("Error al obtener los mensajes del thread \"$thread_id\".");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     public function createThread(): string
     {
         try {
-            $peticion = $this->cliente->threads()->create([]);
-            return $peticion->id;
+            $request = $this->cliente->threads()->create([]);
+            return $request->id;
         } catch (Exception $e) {
             throw new Exception("Error al crear el thread.");
         }
