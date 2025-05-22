@@ -13,13 +13,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SubjectController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $justUserSubjects = $request->query('user') === 'true';
-
-        $subjects = $justUserSubjects ?
-            Subject::where('user_id', $request->user()->id)->get() :
-            Subject::all();
+        $subjects = Subject::where('user_id', auth()->user()->id)->get();
 
         return Inertia::render('Subjects/Subjects', [
             'subjects' => $subjects

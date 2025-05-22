@@ -17,7 +17,7 @@ class ChatController extends Controller
      */
     public function show(string $id, OpenAIChatService $chatService)
     {
-        $chat = Chat::find($id);
+        $chat = Chat::where('user_id', auth()->user()->id)->find($id);
         $subject = Subject::find($chat->subject_id);
 
         if (!$chat || !$subject)
