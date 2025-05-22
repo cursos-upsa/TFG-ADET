@@ -64,7 +64,6 @@ class ChatController extends Controller
     public function store(Request $request, OpenAIChatService $chatService)
     {
         $validatedData = $request->validate([
-            'messages'  => ['array', 'max:100'],
             'subjectId' => ['required', 'int'],
             'threadId'  => ['required', 'string'],
             'newUserMessage'   => ['required', 'string', 'max:10000'],
@@ -80,16 +79,14 @@ class ChatController extends Controller
             thread_id: $validatedData['threadId'],
             assistant_id: $subject->assistant_id
         );
-        $messages = array_merge($validatedData['messages'], [$validatedData['newUserMessage'], $message]);
+        $messages = [$validatedData['newUserMessage'], $message];
 
         $chat->last_activity = now();
         $chat->save();
 
         return Inertia::render('Chats/Chat', [
-            'subjectId'   => $subject->id,
-            'subjectName' => $subject->name,
-            'threadId'    => $validatedData['threadId'],
-            'messages'    => $messages
+            // As the front-end aks for `only: ['messages']`, update the messages prop mergin the new messages.
+            'messages'    => Inertia::merge($messages)
         ]);
     }
 }

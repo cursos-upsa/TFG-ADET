@@ -3,32 +3,29 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import Loader from "@/Components/Loader.jsx";
-import {useEffect} from "react";
 import ErrorList from "@/Components/ErrorList.jsx";
 
-const Chat = ({subjectId, subjectName, threadId, messages = [], newChat = false}) => {
+const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => {
     const {data, setData, post, processing, errors} = useForm({
         subjectId: subjectId,
         threadId: threadId,
-        messages,
         newUserMessage: '',
     })
 
-    useEffect(() => {
-        if (messages.length > 0) {
-            setData('messages', messages);
-        }
-    }, [messages]);
-
     function submit(e) {
         e.preventDefault()
-        post(route('chats.store'), {
-            preserveUrl: true, // Avoid changind the URL to /chats/store, so reloading the page doesn't fail.
-            preserveScroll: true,
-            onSuccess: () => {
-                setData('newUserMessage', '');
-            }
-        })
+        post(
+            route('chats.store'),
+            {
+                // Avoid changind the URL to /chats/store, so reloading the page doesn't fail.
+                preserveUrl: true,
+                preserveScroll: true,
+                onSuccess: () => {
+                    setData('newUserMessage', '');
+                },
+                // Tell Inertia to only update the messages array.
+                only: ['messages']
+            })
     }
 
 
@@ -42,7 +39,7 @@ const Chat = ({subjectId, subjectName, threadId, messages = [], newChat = false}
                 <>
                     <h3>Chat para la asignatura <i>{subjectName}</i>.</h3>
                     <Deferred fallback={<Loader>Cargando conversación...</Loader>} data={"messages"}>
-                        {messages.map((message, index) => {
+                        {messages?.map((message, index) => {
                                 if (index % 2 === 0) {
                                     return <p key={index}><b>{message}</b></p>;
                                 }
