@@ -70,6 +70,7 @@ class ChatController extends Controller
             'newUserMessage'   => ['required', 'string', 'max:10000'],
         ]);
         $subject = Subject::find($validatedData['subjectId']);
+        $chat = Chat::where('thread_id', $validatedData['threadId'])->first();
 
         $chatService->createMessage(
             thread_id: $validatedData['threadId'],
@@ -80,6 +81,9 @@ class ChatController extends Controller
             assistant_id: $subject->assistant_id
         );
         $messages = array_merge($validatedData['messages'], [$validatedData['newUserMessage'], $message]);
+
+        $chat->last_activity = now();
+        $chat->save();
 
         return Inertia::render('Chats/Chat', [
             'subjectId'   => $subject->id,
