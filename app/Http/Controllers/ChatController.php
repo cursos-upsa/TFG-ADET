@@ -12,7 +12,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ChatController extends Controller
 {
-    public function show(string $id)
+    /**
+     * @throws Exception
+     */
+    public function show(string $id, OpenAIChatService $chatService)
     {
         $chat = Chat::find($id);
         $subject = Subject::find($chat->subject_id);
@@ -24,7 +27,7 @@ class ChatController extends Controller
             'subjectId'   => $subject->id,
             'subjectName' => $subject->name,
             'threadId'    => $chat->thread_id,
-            'messages'    => fn() => [],
+            'messages'    => Inertia::defer(fn () => $chatService->getMessages($chat->thread_id)),
         ]);
     }
 
@@ -68,7 +71,7 @@ class ChatController extends Controller
         ]);
         $subject = Subject::find($validatedData['subjectId']);
 
-        $messageId = $chatService->createMessage(
+        $chatService->createMessage(
             thread_id: $validatedData['threadId'],
             userMessage: $validatedData['newUserMessage']
         );

@@ -1,18 +1,28 @@
+// noinspection JSCheckFunctionSignatures
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import Loader from "@/Components/Loader.jsx";
+import {useEffect} from "react";
 
-const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => {
+const Chat = ({subjectId, subjectName, threadId, messages = [], newChat = false}) => {
     const {data, setData, post, processing} = useForm({
         subjectId: subjectId,
         threadId: threadId,
-        messages: messages,
+        messages,
         newUserMessage: '',
     })
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            setData('messages', messages);
+        }
+    }, [messages]);
 
     function submit(e) {
         e.preventDefault()
         post(route('chats.store'))
+        setData('newUserMessage', '');
     }
 
 
@@ -28,7 +38,7 @@ const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => 
                     <Deferred fallback={<Loader>Cargando conversación...</Loader>} data={"messages"}>
                         {messages.map((message, index) => {
                                 if (index % 2 === 0) {
-                                    return <p key={index}><strong>{message}</strong></p>;
+                                    return <p key={index}><b>{message}</b></p>;
                                 }
                                 return <p key={index}>{message}</p>;
                             }
