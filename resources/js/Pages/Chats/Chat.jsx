@@ -28,7 +28,6 @@ const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => 
             })
     }
 
-
     return (
         <AuthenticatedLayout>
             <Head title="Chat"/>
@@ -46,6 +45,13 @@ const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => 
                                 return <p key={index}>{message}</p>;
                             }
                         )}
+                        {processing && data.newUserMessage ?
+                            (
+                                <>
+                                    <p key={messages.length}><b>{data.newUserMessage}</b></p>
+                                    <Loader>Generando respuesta...</Loader>
+                                </>
+                            ) : null}
                     </Deferred>
                 </>
             )}
