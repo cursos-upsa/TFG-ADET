@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Services\OpenAIAssistantService;
+use App\Services\OpenAIChatService;
 use App\Services\OpenAIFilesService;
 use Exception;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class SubjectController extends Controller
             'name'        => $subject->name,
             'description' => $subject->description,
             'created_at'  => $subject->created_at->format('d/m/Y H:i'),
-            'chats'       => Inertia::defer(fn () => $subject->chats()->get()),
+            'chats'       => Inertia::defer(fn() => $subject->chats()->get()),
         ]);
     }
 
@@ -99,7 +100,8 @@ class SubjectController extends Controller
     /**
      * @throws Exception
      */
-    public function destroy(string $id, OpenAIAssistantService $assistantService, OpenAIFilesService $filesService)
+    public function destroy(string             $id, OpenAIAssistantService $assistantService,
+                            OpenAIFilesService $filesService, OpenAIChatService $chatService)
     {
         $subject = Subject::find($id);
 
@@ -108,8 +110,8 @@ class SubjectController extends Controller
             $filesService->deleteFiles($subject->vector_store_id);
             $filesService->deleteVectorStore($subject->vector_store_id);
         }
-        $subject->delete();
+        $subject->chats()->each(fn($chat) => $chatService->deleteThread($chat->thread_id));
 
-        return redirect()->route('subjects.index');
+        $subject->delete();
     }
 }

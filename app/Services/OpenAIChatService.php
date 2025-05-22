@@ -39,6 +39,18 @@ class OpenAIChatService
     /**
      * @throws Exception
      */
+    public function deleteThread(string $threadId): void
+    {
+        try {
+            $this->cliente->threads()->delete($threadId);
+        } catch (Exception $e) {
+            throw new Exception("Error al eliminar el thread \"$threadId\".");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     public function createThread(): string
     {
         try {

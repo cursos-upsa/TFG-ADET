@@ -32,7 +32,8 @@ const Subjects = ({subjects}) => {
                         <b>{subject.name}</b> {subject.description}
                         <button onClick={(e) => {
                             deleteSubject(e, subject.id);
-                        }}>Eliminar
+                        }}>
+                            Eliminar
                         </button>
                     </li>
                 ))}

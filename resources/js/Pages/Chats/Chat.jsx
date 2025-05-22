@@ -5,7 +5,7 @@ import {Deferred, Head, useForm} from "@inertiajs/react";
 import Loader from "@/Components/Loader.jsx";
 import ErrorList from "@/Components/ErrorList.jsx";
 
-const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => {
+const Chat = ({subjectId, subjectName, threadId, messages}) => {
     const {data, setData, post, processing, errors} = useForm({
         subjectId: subjectId,
         threadId: threadId,
@@ -31,31 +31,25 @@ const Chat = ({subjectId, subjectName, threadId, messages, newChat = false}) => 
     return (
         <AuthenticatedLayout>
             <Head title="Chat"/>
-            {newChat && (
-                <h3>Nuevo chat para la asignatura <i>{subjectName}</i>.</h3>
-            )}
-            {!newChat && (
-                <>
-                    <h3>Chat para la asignatura <i>{subjectName}</i>.</h3>
-                    <Deferred fallback={<Loader>Cargando conversación...</Loader>} data={"messages"}>
-                        {messages?.map((message, index) => {
-                                if (index % 2 === 0) {
-                                    return <p key={index}><b>{message}</b></p>;
-                                }
-                                return <p key={index}>{message}</p>;
-                            }
-                        )}
-                        {processing && data.newUserMessage ?
-                            (
-                                <>
-                                    <p key={messages.length}><b>{data.newUserMessage}</b></p>
-                                    <Loader>Generando respuesta...</Loader>
-                                </>
-                            ) : null}
-                    </Deferred>
-                </>
-            )}
-            <hr/>
+
+            <h3>Chat para la asignatura <i>{subjectName}</i>.</h3>
+            <Deferred fallback={<Loader>Cargando conversación...</Loader>} data={"messages"}>
+                {messages?.map((message, index) => {
+                        if (index % 2 === 0) {
+                            return <p key={index}><b>{message}</b></p>;
+                        }
+                        return <p key={index}>{message}</p>;
+                    }
+                )}
+                {processing && data.newUserMessage ?
+                    (
+                        <>
+                            <p key={messages.length}><b>{data.newUserMessage}</b></p>
+                            <Loader>Generando respuesta...</Loader>
+                        </>
+                    ) : null}
+            </Deferred>
+
             <form onSubmit={submit}>
                 <label>
                     <textarea name={"newUserMessage"}

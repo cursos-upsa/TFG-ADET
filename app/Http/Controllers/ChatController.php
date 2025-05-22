@@ -27,7 +27,7 @@ class ChatController extends Controller
             'subjectId'   => $subject->id,
             'subjectName' => $subject->name,
             'threadId'    => $chat->thread_id,
-            'messages'    => Inertia::defer(fn () => $chatService->getMessages($chat->thread_id)),
+            'messages'    => Inertia::defer(fn() => $chatService->getMessages($chat->thread_id)),
         ]);
     }
 
@@ -49,12 +49,8 @@ class ChatController extends Controller
             'last_activity' => now()
         ]);
 
-        return Inertia::render('Chats/Chat', [
-            'subjectId'   => $subject->id,
-            'subjectName' => $subject->name,
-            'threadId'    => $chat->thread_id,
-            'messages'    => [],
-            'newChat'     => true,
+        return redirect()->route('chats.show', [
+            'chatId' => $chat->id
         ]);
     }
 
@@ -64,9 +60,9 @@ class ChatController extends Controller
     public function store(Request $request, OpenAIChatService $chatService)
     {
         $validatedData = $request->validate([
-            'subjectId' => ['required', 'int'],
-            'threadId'  => ['required', 'string'],
-            'newUserMessage'   => ['required', 'string', 'max:10000'],
+            'subjectId'      => ['required', 'int'],
+            'threadId'       => ['required', 'string'],
+            'newUserMessage' => ['required', 'string', 'max:10000'],
         ]);
         $subject = Subject::find($validatedData['subjectId']);
         $chat = Chat::where('thread_id', $validatedData['threadId'])->first();
@@ -86,7 +82,23 @@ class ChatController extends Controller
 
         return Inertia::render('Chats/Chat', [
             // As the front-end aks for `only: ['messages']`, update the messages prop mergin the new messages.
-            'messages'    => Inertia::merge($messages)
+            'messages' => Inertia::merge($messages)
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function destroy(string $chatId, OpenAIChatService $chatService)
+    {
+        $chat = Chat::find($chatId);
+        $subjectId = $chat->subject_id;
+
+        $chatService->deleteThread($chat->thread_id);
+        $chat->delete();
+
+        return redirect()->route('subjects.show', [
+            'subjectId' => $subjectId
         ]);
     }
 }

@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/store', [ChatController::class, 'store'])->name('store');
 
         Route::get('/{chatId}', [ChatController::class, 'show'])->name('show');
+        Route::delete('/{chatId}', [ChatController::class, 'destroy'])->name('destroy');
     });
 });
 
