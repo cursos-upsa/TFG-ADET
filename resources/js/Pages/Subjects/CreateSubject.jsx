@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
+import ErrorList from "@/Components/ErrorList.jsx";
 
 const CreateSubject = () => {
     const {data, setData, post, processing, errors} = useForm({
@@ -49,13 +50,7 @@ const CreateSubject = () => {
                     Crear asignatura
                 </button>
                 <output>
-                    {errors && (
-                        <ul>
-                            {Object.entries(errors).map(([key, value]) => (
-                                <p key={key}>{value}</p>
-                            ))}
-                        </ul>
-                    )}
+                    <ErrorList formErrors={errors}/>
                 </output>
             </form>
         </AuthenticatedLayout>

@@ -4,9 +4,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import Loader from "@/Components/Loader.jsx";
 import {useEffect} from "react";
+import ErrorList from "@/Components/ErrorList.jsx";
 
 const Chat = ({subjectId, subjectName, threadId, messages = [], newChat = false}) => {
-    const {data, setData, post, processing} = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         subjectId: subjectId,
         threadId: threadId,
         messages,
@@ -62,6 +63,9 @@ const Chat = ({subjectId, subjectName, threadId, messages = [], newChat = false}
                 <button type={"submit"} disabled={processing}>
                     Enviar
                 </button>
+                <output>
+                    <ErrorList formErrors={errors}/>
+                </output>
             </form>
         </AuthenticatedLayout>
     );
