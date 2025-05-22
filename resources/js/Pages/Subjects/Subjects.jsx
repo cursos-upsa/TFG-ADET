@@ -10,27 +10,30 @@ const Subjects = ({subjects}) => {
     const deleteSubject = (e, subjectId) => {
         e.stopPropagation();  // Avoid triggering the parent's <li> click event.
 
-        if (confirm('¿Estás seguro de que quieres eliminar esta asignatura?')) {
-            router.delete(route('subjects.destroy', {subjectId}))
-        }
+        router.delete(route('subjects.destroy', {subjectId}), {
+            onBefore: () => confirm('¿Estás seguro de que quieres eliminar esta asignatura?')
+        })
     }
 
     return (
         <AuthenticatedLayout>
             <Head title={"Asignaturas"}/>
 
-            {subjects.length === 0 &&
-                <p>Aún no hay ninguna asignatura</p>}
-
             <Link href={route('subjects.create')}>
                 <button>Crear nueva asignatura</button>
             </Link>
+
+            {subjects.length === 0 &&
+                <p>Aún no hay ninguna asignatura.</p>}
 
             <ul>
                 {subjects.map((subject) => (
                     <li key={subject.id} onClick={() => showSubject(subject.id)}>
                         <b>{subject.name}</b> {subject.description}
-                        <button onClick={(e) => { deleteSubject(e, subject.id); }}>Eliminar</button>
+                        <button onClick={(e) => {
+                            deleteSubject(e, subject.id);
+                        }}>Eliminar
+                        </button>
                     </li>
                 ))}
             </ul>
