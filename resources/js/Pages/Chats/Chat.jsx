@@ -21,8 +21,13 @@ const Chat = ({subjectId, subjectName, threadId, messages = [], newChat = false}
 
     function submit(e) {
         e.preventDefault()
-        post(route('chats.store'))
-        setData('newUserMessage', '');
+        post(route('chats.store'), {
+            preserveUrl: true, // Avoid changind the URL to /chats/store, so reloading the page doesn't fail.
+            preserveScroll: true,
+            onSuccess: () => {
+                setData('newUserMessage', '');
+            }
+        })
     }
 
 
