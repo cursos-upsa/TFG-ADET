@@ -1,7 +1,9 @@
 const Loader = ({children}) => {
     return (
         <p>
-            {children}
+            <i>
+                {children}
+            </i>
         </p>
     );
 };
