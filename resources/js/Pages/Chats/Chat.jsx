@@ -4,8 +4,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import Loader from "@/Components/Loader.jsx";
 import ErrorList from "@/Components/ErrorList.jsx";
+import usePopStateReload from "@/Hooks/usePopStateReload.js";
 
 const Chat = ({subjectId, subjectName, threadId, messages}) => {
+    // fix: arreglar problemas de chaché
+    usePopStateReload();
     const {data, setData, post, processing, errors} = useForm({
         subjectId: subjectId,
         threadId: threadId,
