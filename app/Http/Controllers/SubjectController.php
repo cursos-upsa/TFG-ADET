@@ -55,8 +55,8 @@ class SubjectController extends Controller
     {
         $validatedData = $request->validate([
             'name'               => ['required', 'string', 'max:255'],
-            'description'        => ['required', 'string', 'max:255'],
-            'extra_instructions' => ['nullable', 'string', 'max:255'],
+            'description'        => ['required', 'string', 'max:1000'],
+            'extra_instructions' => ['nullable', 'string', 'max:2000'],
 
             'files'   => ['nullable', 'array', 'max:10'],
             'files.*' => [
