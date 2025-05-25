@@ -7,7 +7,6 @@ import ErrorList from "@/Components/ErrorList.jsx";
 import usePopStateReload from "@/Hooks/usePopStateReload.js";
 
 const Chat = ({subjectId, subjectName, threadId, messages}) => {
-    // fix: arreglar problemas de chaché
     usePopStateReload();
     const {data, setData, post, processing, errors} = useForm({
         subjectId: subjectId,
