@@ -13,7 +13,8 @@ class Doubt extends Model
     protected $fillable = [
         'chat_id',
         'subject_id',
-        'doubt',
+        'question',
+        'answer',
         'state',
         'comment',
         'added_to_memory',
@@ -22,7 +23,6 @@ class Doubt extends Model
     ];
 
     protected $casts = [
-        'doubt' => 'array',
         'added_to_memory' => 'boolean',
         'reviewed_timestamp' => 'datetime',
     ];
