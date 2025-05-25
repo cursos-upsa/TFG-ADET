@@ -14,6 +14,22 @@ class OpenAIChatService
         $this->cliente = $cliente;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getLastMessageId(string $threadId): ?string
+    {
+        try {
+            $request = $this->cliente->threads()->messages()->list($threadId, [
+                "order" => "desc",
+                "limit" => 1,
+            ]);
+            return $request->lastId ?? null;
+        } catch (Exception $e) {
+            throw new Exception("Error al obtener el último mensaje del thread \"$threadId\".");
+        }
+    }
+
     public function getAllMessagesAfter(string $threadId, ?string $afterMessageId = null): array
     {
         $messages = [];

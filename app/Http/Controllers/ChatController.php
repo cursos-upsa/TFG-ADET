@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\Doubt;
 use App\Models\Subject;
+use App\Services\OpenAIChatProcessingService;
 use App\Services\OpenAIChatService;
 use Exception;
 use Illuminate\Http\Request;
@@ -105,7 +107,8 @@ class ChatController extends Controller
     /**
      * @throws Exception
      */
-    public function process(int $subjectId, OpenAIChatService $chatService)
+    public function process(int $subjectId, OpenAIChatService $chatService,
+        OpenAIChatProcessingService $chatProcessingService)
     {
         $subject = Subject::find($subjectId);
         $unprocessedChats = $subject->chats()->where(function ($query) {
@@ -117,12 +120,32 @@ class ChatController extends Controller
         foreach ($unprocessedChats as $chat) {
             $threadId = $chat->thread_id;
             $lastSythesizedMessageId = $chat->last_synthesized_message_id;
+
+            $lastMessageId = $chatService->getLastMessageId($threadId);
+
             $chatMessages = $chatService->getAllMessagesAfter(
                 threadId: $threadId,
                 afterMessageId: $lastSythesizedMessageId
             );
+            $doubts = $chatProcessingService->extractDoubts($chatMessages, $subject->name);
 
-            // TODO: process chats.
+            foreach ($doubts as $doubt) {
+                Doubt::create([
+                    'chat_id'            => $chat->id,
+                    'subject_id'         => $subject->id,
+                    'question'           => $doubt->question,
+                    'answer'             => $doubt->answer,
+                    'state'              => 'pending',
+                    'reviewer_user_id'   => null,
+                    'added_to_memory'    => false,
+                    'reviewed_timestamp' => null,
+                ]);
+            }
+
+            // FIXME: last_activity is updating also to `now()` without doing it explicitly.
+            $chat->last_synthesized = now();
+            $chat->last_synthesized_message_id = $lastMessageId;
+            $chat->save();
         }
     }
 }
