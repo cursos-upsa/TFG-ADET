@@ -101,4 +101,28 @@ class ChatController extends Controller
             'subjectId' => $subjectId
         ]);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function process(int $subjectId, OpenAIChatService $chatService)
+    {
+        $subject = Subject::find($subjectId);
+        $unprocessedChats = $subject->chats()->where(function ($query) {
+            $query
+                ->WhereColumn('last_activity', '>', 'last_synthesized')
+                ->orWhereNull('last_synthesized');
+        })->get();
+
+        foreach ($unprocessedChats as $chat) {
+            $threadId = $chat->thread_id;
+            $lastSythesizedMessageId = $chat->last_synthesized_message_id;
+            $chatMessages = $chatService->getAllMessagesAfter(
+                threadId: $threadId,
+                afterMessageId: $lastSythesizedMessageId
+            );
+
+            // TODO: process chats.
+        }
+    }
 }

@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/{chatId}', [ChatController::class, 'show'])->name('show');
         Route::delete('/{chatId}', [ChatController::class, 'destroy'])->name('destroy');
+
+        Route::get('/process/{subjectId}', [ChatController::class, 'process'])->name('process');
     });
 });
 

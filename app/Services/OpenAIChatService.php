@@ -14,6 +14,35 @@ class OpenAIChatService
         $this->cliente = $cliente;
     }
 
+    public function getAllMessagesAfter(string $threadId, ?string $afterMessageId = null): array
+    {
+        $messages = [];
+        $listParameters = [
+            'order' => 'asc',
+            'limit' => 100,
+        ];
+
+        if ($afterMessageId) {
+            $listParameters['after'] = $afterMessageId;
+        }
+
+        do {
+            $request = $this->cliente->threads()->messages()->list($threadId, $listParameters);
+
+            foreach ($request->data as $result) {
+                $messages[] = self::getMessageText($result->content);
+            }
+
+            if (isset($request->has_more) && $request->has_more && isset($request->last_id)) {
+                $listParameters['after'] = $request->last_id;
+            } else {
+                break;
+            }
+        } while (true);
+
+        return $messages;
+    }
+
     /**
      * @throws Exception
      */
