@@ -114,8 +114,6 @@ class OpenAIAssistantService
         TEXT;
     }
 
-    private const OPENAI_MODEL = 'gpt-4.1-mini';
-
     /**
      * @throws Exception
      */
@@ -126,7 +124,7 @@ class OpenAIAssistantService
         $params = [
             'name' => $name,
             'instructions' => $instructions,
-            'model' => self::OPENAI_MODEL,
+            'model' => ConstantsService::OPENAI_ASSITANTS_MODEL,
             'tools' => [['type' => 'file_search']],
         ];
 
