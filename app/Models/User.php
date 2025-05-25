@@ -59,6 +59,16 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class);
     }
 
+    public function reviewedDoubts(): HasMany
+    {
+        return $this->hasMany(Doubt::class, 'reviewer_user_id');
+    }
+
+    public function doubtReactions(): HasMany
+    {
+        return $this->hasMany(DoubtReaction::class);
+    }
+
     /**
      * Check if the user is a student.
      *

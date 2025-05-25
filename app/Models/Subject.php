@@ -31,6 +31,11 @@ class Subject extends Model
         return $this->hasMany(Chat::class);
     }
 
+    public function doubts(): HasMany
+    {
+        return $this->hasMany(Doubt::class);
+    }
+
     protected static function booted(): void
     {
         // Listen for the "creating" event and set the user ID to the current user's ID.
