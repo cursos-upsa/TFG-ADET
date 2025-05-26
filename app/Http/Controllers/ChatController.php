@@ -142,7 +142,6 @@ class ChatController extends Controller
                 ]);
             }
 
-            // FIXME: last_activity is updating also to `now()` without doing it explicitly.
             $chat->last_synthesized = now();
             $chat->last_synthesized_message_id = $lastMessageId;
             $chat->save();
