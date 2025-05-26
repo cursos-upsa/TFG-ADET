@@ -14,14 +14,15 @@ const Subject = ({id, name, description, created_at, chats, unprocessedChatsNumb
             <h1>{name}</h1>
             <p><small>Creación: {created_at}</small></p>
             <p>{description}</p>
+            <hr/>
 
-            <Deferred fallback={<Loader>Cargando los chats...</Loader>} data={"chats"}>
-                <Chats chats={chats}
-                       subjectId={id}/>
-            </Deferred>
             <Deferred fallback={<Loader>Cargando...</Loader>} data={"unprocessedChatsNumber"}>
                 <DoubtDashboard unprocessedChatsNumber={unprocessedChatsNumber}
                                 subjectId={subjectId}/>
+            </Deferred>
+            <Deferred fallback={<Loader>Cargando los chats...</Loader>} data={"chats"}>
+                <Chats chats={chats}
+                       subjectId={id}/>
             </Deferred>
         </AuthenticatedLayout>
     );
