@@ -56,7 +56,7 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
                 <label>
                     <input name={"newUserMessage"} style={{width: '100%', height: '3em'}}
                            disabled={processing}
-                           placeholder={"Escribe aquí tu mensaje..."}
+                           placeholder={"Escribe aquí tu duda..."}
                            value={data.newUserMessage}
                            onChange={(e) => setData('newUserMessage', e.target.value)}/>
                 </label>
