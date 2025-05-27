@@ -1,6 +1,6 @@
 import {router} from "@inertiajs/react";
 
-const DoubtDashboard = ({unprocessedChatsNumber, subjectId}) => {
+const DoubtProcessingControl = ({unprocessedChatsNumber, subjectId}) => {
 
     const processAllChats = () => {
         router.get(route('chats.process', {subjectId}), {
@@ -26,4 +26,4 @@ const DoubtDashboard = ({unprocessedChatsNumber, subjectId}) => {
     );
 };
 
-export default DoubtDashboard;
+export default DoubtProcessingControl;

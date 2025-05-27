@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import Loader from "@/Components/Loader.jsx";
 import Chats from "@/Pages/Subjects/Partials/Chats.jsx";
 import usePopStateReload from "@/Hooks/usePopStateReload.js";
-import DoubtDashboard from "@/Pages/Subjects/Partials/DoubtDashboard.jsx";
+import DoubtProcessingControl from "@/Pages/Subjects/Partials/DoubtProcessingControl.jsx";
 
 const Subject = ({id, name, description, created_at, chats, unprocessedChatsNumber, subjectId}) => {
     usePopStateReload();
@@ -17,8 +17,8 @@ const Subject = ({id, name, description, created_at, chats, unprocessedChatsNumb
             <hr/>
 
             <Deferred fallback={<Loader>Cargando...</Loader>} data={"unprocessedChatsNumber"}>
-                <DoubtDashboard unprocessedChatsNumber={unprocessedChatsNumber}
-                                subjectId={subjectId}/>
+                <DoubtProcessingControl unprocessedChatsNumber={unprocessedChatsNumber}
+                                        subjectId={subjectId}/>
             </Deferred>
             <Deferred fallback={<Loader>Cargando los chats...</Loader>} data={"chats"}>
                 <Chats chats={chats}
