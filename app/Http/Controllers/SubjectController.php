@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
+use App\Models\User;
 use App\Services\OpenAIAssistantService;
 use App\Services\OpenAIChatService;
 use App\Services\OpenAIFilesService;
@@ -46,7 +47,14 @@ class SubjectController extends Controller
 
     public function create()
     {
-        return Inertia::render('Subjects/CreateSubject');
+        return Inertia::render('Subjects/CreateSubject',
+            [
+                'students' => Inertia::defer(fn() => User::where('role', 'student')
+                    ->select('id', 'name')
+                    ->orderBy('name')
+                    ->get(),
+                    'students'),
+            ]);
     }
 
     public function edit(string $id)
@@ -102,8 +110,8 @@ class SubjectController extends Controller
     /**
      * @throws Exception
      */
-    public function destroy(string             $id, OpenAIAssistantService $assistantService,
-                            OpenAIFilesService $filesService, OpenAIChatService $chatService)
+    public function destroy(string $id, OpenAIAssistantService $assistantService,
+        OpenAIFilesService $filesService, OpenAIChatService $chatService)
     {
         $subject = Subject::find($id);
 

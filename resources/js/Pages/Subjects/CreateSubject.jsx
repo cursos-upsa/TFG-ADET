@@ -1,8 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, useForm} from "@inertiajs/react";
+import {Deferred, Head, useForm} from "@inertiajs/react";
 import ErrorList from "@/Components/ErrorList.jsx";
+import MatriculationList from "@/Pages/Subjects/Partials/MatriculationList.jsx";
 
-const CreateSubject = () => {
+const CreateSubject = ({students}) => {
     const {data, setData, post, processing, errors} = useForm({
         name: '',
         description: '',
@@ -46,6 +47,9 @@ const CreateSubject = () => {
                            onChange={(e) => setData('files', e.target.files)}
                            multiple/>
                 </label>
+                <Deferred fallback={<p>Cargando lista de alumnos...</p>} data={"students"}>
+                    <MatriculationList students={students}/>
+                </Deferred>
                 <button type="submit" disabled={processing}>
                     Crear asignatura
                 </button>
