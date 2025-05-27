@@ -5,7 +5,7 @@ import Chats from "@/Pages/Subjects/Partials/Chats.jsx";
 import usePopStateReload from "@/Hooks/usePopStateReload.js";
 import DoubtProcessingControl from "@/Pages/Subjects/Partials/DoubtProcessingControl.jsx";
 
-const Subject = ({id, name, description, created_at, chats, unprocessedChatsNumber, subjectId}) => {
+const Subject = ({id, name, description, created_at, chats, unprocessedChatsNumber}) => {
     usePopStateReload();
 
     return (
@@ -18,7 +18,7 @@ const Subject = ({id, name, description, created_at, chats, unprocessedChatsNumb
 
             <Deferred fallback={<Loader>Cargando...</Loader>} data={"unprocessedChatsNumber"}>
                 <DoubtProcessingControl unprocessedChatsNumber={unprocessedChatsNumber}
-                                        subjectId={subjectId}/>
+                                        subjectId={id}/>
             </Deferred>
             <Deferred fallback={<Loader>Cargando los chats...</Loader>} data={"chats"}>
                 <Chats chats={chats}

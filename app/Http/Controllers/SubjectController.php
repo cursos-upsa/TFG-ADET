@@ -36,7 +36,6 @@ class SubjectController extends Controller
             'description'            => $subject->description,
             'created_at'             => $subject->created_at->format('d/m/Y H:i'),
             'chats'                  => Inertia::defer(fn() => $subject->chats()->get(), 'chats'),
-            'subjectId'              => Inertia::defer(fn() => $subject->id, 'chats_processing'),
             'unprocessedChatsNumber' => Inertia::defer(fn() => $subject->chats()->where(function ($query) {
                 $query
                     ->WhereColumn('last_activity', '>', 'last_synthesized')
