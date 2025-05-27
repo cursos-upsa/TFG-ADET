@@ -12,7 +12,6 @@ const Subject = ({
                      created_at,
                      chats,
                      unprocessedChatsNumber,
-                     doubtsNumber,
                      pendingDoubtsNumber
                  }) => {
     usePopStateReload();
@@ -29,11 +28,11 @@ const Subject = ({
                 <DoubtProcessingControl unprocessedChatsNumber={unprocessedChatsNumber}
                                         subjectId={id}/>
             </Deferred>
-            <Deferred fallback={<Loader>Cargando...</Loader>} data={["doubtsNumber", "pendingDoubtsNumber"]}>
-                {doubtsNumber === 0 ?
-                    <p>No hay dudas de los alumnos para esta asignatura.</p> :
-                    <Link>
-                        Ver dudas de los alumnos {pendingDoubtsNumber > 0 ? `(${pendingDoubtsNumber} pendientes)` : ''}
+            <Deferred fallback={<Loader>Cargando...</Loader>} data={"pendingDoubtsNumber"}>
+                {pendingDoubtsNumber === 0 ?
+                    <p>No hay dudas pendientes de los alumnos para esta asignatura.</p> :
+                    <Link href={route('doubts.show', {subjectId: id})}>
+                        Administrar dudas pendientes de los alumnos ({pendingDoubtsNumber})
                     </Link>}
             </Deferred>
             <Deferred fallback={<Loader>Cargando los chats...</Loader>} data={"chats"}>

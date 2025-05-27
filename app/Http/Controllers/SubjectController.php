@@ -42,8 +42,6 @@ class SubjectController extends Controller
                     ->WhereColumn('last_activity', '>', 'last_synthesized')
                     ->orWhereNull('last_synthesized');
             })->count(), 'chats_processing'),
-            'doubtsNumber'           => Inertia::defer(fn() => Doubt::where('subject_id', $subject->id)->count(),
-                'doubts'),
             'pendingDoubtsNumber'    => Inertia::defer(fn() => Doubt::where('subject_id', $subject->id)->where('state',
                 'pending')->count(),
                 'doubts'),
