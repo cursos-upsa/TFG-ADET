@@ -9,11 +9,16 @@ const CreateSubject = ({students}) => {
         description: '',
         extra_instructions: '',
         files: [],
+        studentIds: [],
     })
 
     function submit(e) {
         e.preventDefault()
         post(route('subjects.store'))
+    }
+
+    const handleStudentsChange = (selectedStudentIds) => {
+        setData('studentIds', selectedStudentIds);
     }
 
     return (
@@ -48,7 +53,10 @@ const CreateSubject = ({students}) => {
                            multiple/>
                 </label>
                 <Deferred fallback={<p>Cargando lista de alumnos...</p>} data={"students"}>
-                    <MatriculationList students={students}/>
+                    <MatriculationList 
+                        students={students}
+                        studentIds={data.studentIds}
+                        onStudentsChange={handleStudentsChange}/>
                 </Deferred>
                 <button type="submit" disabled={processing}>
                     Crear asignatura

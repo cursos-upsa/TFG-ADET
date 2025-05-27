@@ -71,6 +71,8 @@ class SubjectController extends Controller
             'name'               => ['required', 'string', 'max:255'],
             'description'        => ['required', 'string', 'max:1000'],
             'extra_instructions' => ['nullable', 'string', 'max:2000'],
+            'studentIds'        => ['nullable', 'array'],
+            'studentIds.*'      => ['exists:users,id'],
 
             'files'   => ['nullable', 'array', 'max:10'],
             'files.*' => [
@@ -98,6 +100,11 @@ class SubjectController extends Controller
         // Associate the user (professor) with the subject he just created.
         $user = $request->user();
         $user->subjects()->attach($subject->id);
+
+        // Associate selected students with the subject if any were selected
+        if (!empty($validatedData['studentIds'])) {
+            $subject->users()->attach($validatedData['studentIds']);
+        }
 
         return redirect()->route('subjects.index');
     }
