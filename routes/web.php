@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::name('doubts.')->prefix('doubts')->group(function () {
         Route::get('/{subjectId}', [DoubtController::class, 'show'])->name('show');
+        Route::post('/{subjectId}', [DoubtController::class, 'store'])->name('store');
     });
 });
 
