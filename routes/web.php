@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DoubtController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{chatId}', [ChatController::class, 'destroy'])->name('destroy');
 
         Route::get('/process/{subjectId}', [ChatController::class, 'process'])->name('process');
+    });
+
+    Route::name('doubts.')->prefix('doubts')->group(function () {
+        Route::get('/{subjectId}', [DoubtController::class, 'show'])->name('show');
     });
 });
 
