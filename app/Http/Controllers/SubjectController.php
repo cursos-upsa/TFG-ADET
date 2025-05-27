@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Doubt;
 use App\Models\Subject;
 use App\Models\User;
 use App\Services\OpenAIAssistantService;
@@ -41,6 +42,11 @@ class SubjectController extends Controller
                     ->WhereColumn('last_activity', '>', 'last_synthesized')
                     ->orWhereNull('last_synthesized');
             })->count(), 'chats_processing'),
+            'doubtsNumber'           => Inertia::defer(fn() => Doubt::where('subject_id', $subject->id)->count(),
+                'doubts'),
+            'pendingDoubtsNumber'    => Inertia::defer(fn() => Doubt::where('subject_id', $subject->id)->where('state',
+                'pending')->count(),
+                'doubts'),
         ]);
     }
 
@@ -70,8 +76,8 @@ class SubjectController extends Controller
             'name'               => ['required', 'string', 'max:255'],
             'description'        => ['required', 'string', 'max:1000'],
             'extra_instructions' => ['nullable', 'string', 'max:2000'],
-            'studentIds'        => ['nullable', 'array'],
-            'studentIds.*'      => ['exists:users,id'],
+            'studentIds'         => ['nullable', 'array'],
+            'studentIds.*'       => ['exists:users,id'],
 
             'files'   => ['nullable', 'array', 'max:10'],
             'files.*' => [
