@@ -146,5 +146,9 @@ class ChatController extends Controller
             $chat->last_synthesized_message_id = $lastMessageId;
             $chat->save();
         }
+
+        return redirect()->route('subjects.show', [
+            'subjectId' => $subject->id
+        ]);
     }
 }
