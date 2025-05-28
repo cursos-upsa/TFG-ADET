@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Doubt;
 use App\Models\Subject;
+use App\Services\OpenAIAssistantService;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -24,11 +26,14 @@ class DoubtController extends Controller
         ]);
     }
 
-    public function store(int $subjectId, Request $request)
+    /**
+     * @throws Exception
+     */
+    public function store(int $subjectId, Request $request, OpenAIAssistantService $assistantService)
     {
         $validatedData = $request->validate([
-            'doubts'    => ['array'],
-            'doubts.*'  => [
+            'doubts'   => ['array'],
+            'doubts.*' => [
                 'id'      => ['required', 'integer'],
                 'state'   => ['required', 'string', 'in:pending,approved,approvedToMemory,rejected,discarded'],
                 'comment' => ['nullable', 'string', 'max:1500'],
@@ -42,7 +47,6 @@ class DoubtController extends Controller
 
             $doubt = Doubt::find($doubtToStore['id']);
             $addToMemory = $doubtToStore['state'] === 'approvedToMemory';
-            // TODO: use the AssistantService to add the doubt to the assisntat's instructiones.
 
             $doubt->state = $addToMemory ? 'approved' : $doubtToStore['state'];
             $doubt->added_to_memory = $addToMemory;
@@ -50,6 +54,22 @@ class DoubtController extends Controller
             $doubt->reviewer_user_id = auth()->user()->id;
             $doubt->save();
         }
+        // Get all the doubts maked as addToMemory from the subject and add them to the assistant.
+        $subject = Subject::find($subjectId);
+
+        $addToMemoryDoubts = $subject->doubts()
+            ->where('added_to_memory', true)
+            ->select('question', 'answer', 'comment')
+            ->get()
+            ->toArray();
+
+        if (count($addToMemoryDoubts) > 0)
+            $assistantService->updateAssistantInstructions(
+                assistantId: $subject->assistant_id,
+                subjectName: $subject->name,
+                extraInstructions: $subject->extra_instructions,
+                doubts: $addToMemoryDoubts
+            );
 
         return redirect()->route('subjects.show', [
             'subjectId' => $subjectId
