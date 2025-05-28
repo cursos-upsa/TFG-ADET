@@ -17,7 +17,9 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::where('user_id', auth()->user()->id)->get();
+        $subjects = auth()->user()->subjects()
+            ->select('subjects.id', 'subjects.name', 'subjects.description')
+            ->get();
 
         return Inertia::render('Subjects/Subjects', [
             'subjects' => $subjects
@@ -36,7 +38,9 @@ class SubjectController extends Controller
             'name'                   => $subject->name,
             'description'            => $subject->description,
             'created_at'             => $subject->created_at->format('d/m/Y H:i'),
-            'chats'                  => Inertia::defer(fn() => $subject->chats()->get(), 'chats'),
+            'chats'                  => Inertia::defer(fn() => $subject->chats()
+                ->where('user_id', auth()->user()->id)
+                ->get(), 'chats'),
             'unprocessedChatsNumber' => Inertia::defer(fn() => $subject->chats()->where(function ($query) {
                 $query
                     ->WhereColumn('last_activity', '>', 'last_synthesized')
