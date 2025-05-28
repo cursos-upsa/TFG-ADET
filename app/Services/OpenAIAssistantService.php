@@ -18,6 +18,53 @@ class OpenAIAssistantService
         $this->client = $client;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function createAssistant(string $name, ?string $extraInstructions, ?string $vectorStoreId): string
+    {
+        $instructions = $this->getBaseInstructions($name, $extraInstructions);
+
+        $params = [
+            'name' => $name,
+            'instructions' => $instructions,
+            'model' => ConstantsService::OPENAI_ASSITANTS_MODEL,
+            'tools' => [['type' => 'file_search']],
+        ];
+
+        if ($vectorStoreId) {
+            $params['tool_resources'] = [
+                'file_search' => [
+                    'vector_store_ids' => [$vectorStoreId],
+                ],
+            ];
+        }
+
+        try {
+            $response = $this->client->assistants()->create($params);
+
+            return $response->id;
+        } catch (Exception $e) {
+            throw new Exception("Error al crear el asistente para la asignatura \"$name\"");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteAssistant(string $assistantId): void
+    {
+        try {
+            $response = $this->client->assistants()->delete(
+                $assistantId
+            );
+            if (!$response->deleted)
+                throw new ErrorException();
+        } catch (Exception $e) {
+            throw new Exception("Error al eliminar el asistente el asistente \"{$assistantId}\"");
+        }
+    }
+
     private function getBaseInstructions(string $subjectName, ?string $extraInstructions): string
     {
         $extraInstructions = $extraInstructions ?? 'No hay instrucciones adicionales.';
@@ -113,52 +160,4 @@ class OpenAIAssistantService
         **Recordatorio Final Crítico:** Tu función primordial es ser un asistente fiable basado **únicamente** en los documentos proporcionados para la asignatura "$subjectName". La adherencia estricta a esta directriz es esencial.
         TEXT;
     }
-
-    /**
-     * @throws Exception
-     */
-    public function createAssistant(string $name, ?string $extraInstructions, ?string $vectorStoreId): string
-    {
-        $instructions = $this->getBaseInstructions($name, $extraInstructions);
-
-        $params = [
-            'name' => $name,
-            'instructions' => $instructions,
-            'model' => ConstantsService::OPENAI_ASSITANTS_MODEL,
-            'tools' => [['type' => 'file_search']],
-        ];
-
-        if ($vectorStoreId) {
-            $params['tool_resources'] = [
-                'file_search' => [
-                    'vector_store_ids' => [$vectorStoreId],
-                ],
-            ];
-        }
-
-        try {
-            $response = $this->client->assistants()->create($params);
-
-            return $response->id;
-        } catch (Exception $e) {
-            throw new Exception("Error al crear el asistente para la asignatura \"$name\"");
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function deleteAssistant(string $assistantId): void
-    {
-        try {
-            $response = $this->client->assistants()->delete(
-                $assistantId
-            );
-            if (!$response->deleted)
-                throw new ErrorException();
-        } catch (Exception $e) {
-            throw new Exception("Error al eliminar el asistente el asistente \"{$assistantId}\"");
-        }
-    }
-
 }

@@ -136,7 +136,5 @@ class OpenAIChatProcessingService
             
             Analiza los mensajes anteriores y extrae únicamente las preguntas académicamente relevantes para la asignatura "$subjectName", siguiendo estrictamente los criterios establecidos.
             TEXT;
-
-
     }
 }
