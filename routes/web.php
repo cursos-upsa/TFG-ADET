@@ -46,6 +46,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{subjectId}', [DoubtController::class, 'show'])->name('show');
         Route::post('/{subjectId}', [DoubtController::class, 'store'])->name('store');
     });
+
+    Route::name('forum.')->prefix('forum')->group(function () {
+        Route::get('/', [DoubtController::class, 'index'])->name('index');
+    });
 });
 
 require __DIR__.'/auth.php';
