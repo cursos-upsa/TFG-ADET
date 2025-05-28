@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
-import DoubtForm from "@/Pages/Doubts/Partials/DoubtForm.jsx";
+import DoubtValidationForm from "@/Pages/Doubts/Partials/DoubtValidationForm.jsx";
 import ErrorList from "@/Components/ErrorList.jsx";
 
 const DoubtDashboard = ({subjectId, subjectName, doubts}) => {
@@ -31,13 +31,13 @@ const DoubtDashboard = ({subjectId, subjectName, doubts}) => {
                 </output>
                 <ol>
                     {doubts.map(({id, created_at, question, answer}) =>
-                        <DoubtForm key={id}
-                                   doubtId={id}
-                                   data={data}
-                                   setData={setData}
-                                   createdAt={created_at}
-                                   question={question}
-                                   answer={answer}/>
+                        <DoubtValidationForm key={id}
+                                             doubtId={id}
+                                             data={data}
+                                             setData={setData}
+                                             createdAt={created_at}
+                                             question={question}
+                                             answer={answer}/>
                     )}
                 </ol>
             </form>

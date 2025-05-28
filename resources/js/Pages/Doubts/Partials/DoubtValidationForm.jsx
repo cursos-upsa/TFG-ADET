@@ -1,4 +1,4 @@
-const DoubtForm = ({doubtId, data, setData, createdAt, question, answer,}) => {
+const DoubtValidationForm = ({doubtId, data, setData, createdAt, question, answer,}) => {
     const doubtData = data.doubts.find(item => item.id === doubtId);
     const {state, comment} = doubtData;
 
@@ -77,4 +77,4 @@ const DoubtForm = ({doubtId, data, setData, createdAt, question, answer,}) => {
     );
 };
 
-export default DoubtForm;
+export default DoubtValidationForm;
