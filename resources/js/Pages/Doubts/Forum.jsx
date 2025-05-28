@@ -3,7 +3,7 @@ import {Head} from "@inertiajs/react";
 import SubjectSelect from "@/Pages/Doubts/Partials/SubjectSelect.jsx";
 import ForumContent from "@/Pages/Doubts/Partials/ForumContent.jsx";
 
-const Forum = ({subjectId, subjectList, doubts}) => {
+const Forum = ({subjectId, subjectList, doubts, reactionCounts, userReactions}) => {
 
     return (
         <AuthenticatedLayout>
@@ -13,7 +13,11 @@ const Forum = ({subjectId, subjectList, doubts}) => {
                 <>
                     <SubjectSelect subjectId={subjectId}
                                    subjectList={subjectList}/>
-                    <ForumContent doubts={doubts}/>
+                    <ForumContent 
+                        doubts={doubts} 
+                        reactionCounts={reactionCounts} 
+                        userReactions={userReactions}
+                    />
                 </>}
         </AuthenticatedLayout>
     );
