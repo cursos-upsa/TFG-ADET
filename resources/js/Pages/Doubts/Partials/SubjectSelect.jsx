@@ -11,7 +11,6 @@ const SubjectSelect = ({subjectId, subjectList}) => {
             subjectId: sanitizedNewVisibleSubjectId
         }), {
             preserveScroll: true,
-            only: ['subjectId', 'doubts']
         });
     }
 
