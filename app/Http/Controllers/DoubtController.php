@@ -49,14 +49,31 @@ class DoubtController extends Controller
                 'subjects.id as subject_id',
                 'subjects.name as subject_name',
                 'reviewers.name as reviewer_name',
-                'creators.role as creator_role'
             )
             ->selectRaw(/** @lang GenericSQL */ <<<SQL
-            CASE WHEN creators.role = 'professor' 
-                THEN creators.name 
-                ELSE NULL 
-            END as professor_name
-            SQL);
+                CONCAT(
+                    DATE_FORMAT(doubts.updated_at, "%d-%m-%Y"),
+                    ', ',
+                    ELT(
+                        WEEKDAY(doubts.updated_at) + 1,
+                        'lunes',
+                        'martes',
+                        'miércoles',
+                        'jueves',
+                        'viernes',
+                        'sábado',
+                        'domingo'
+                    )
+                ) AS updated_at_formatted
+                SQL
+            )
+            ->selectRaw(/** @lang GenericSQL */ <<<SQL
+                CASE WHEN creators.role = 'professor' 
+                    THEN creators.name 
+                    ELSE NULL 
+                END as professor_name
+                SQL
+            );
 
         if (isset($validatedData['subjectId']))
             $query->where('doubts.subject_id', $validatedData['subjectId']);
