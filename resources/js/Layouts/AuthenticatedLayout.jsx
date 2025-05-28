@@ -20,6 +20,9 @@ export default function AuthenticatedLayout({children}) {
                     <li>
                         <Link href={route('subjects.index')}>Asignaturas</Link>
                     </li>
+                    <li>
+                        <Link href={route('forum.index')}>Foro</Link>
+                    </li>
                 </ul>
                 <div>
                     <Link href={route('profile.edit')}>{user.name} - {userRole}</Link>
