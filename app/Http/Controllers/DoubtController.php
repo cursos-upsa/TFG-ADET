@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doubt;
+use App\Models\DoubtReaction;
 use App\Models\Subject;
 use App\Services\OpenAIAssistantService;
 use Exception;
@@ -84,10 +85,14 @@ class DoubtController extends Controller
             ->take(50)
             ->get();
 
+        [$reactionCounts, $userReactions] = $this->getReactions($doubts, $user);
+
         return Inertia::render('Doubts/Forum', [
-            'subjectId'   => $validatedData['subjectId'] ?? null,
-            'subjectList' => $userSubjects,
-            'doubts'      => $doubts
+            'subjectId'      => $validatedData['subjectId'] ?? null,
+            'subjectList'    => $userSubjects,
+            'doubts'         => $doubts,
+            'reactionCounts' => $reactionCounts,
+            'userReactions'  => $userReactions
         ]);
     }
 
@@ -154,5 +159,57 @@ class DoubtController extends Controller
         return redirect()->route('subjects.show', [
             'subjectId' => $subjectId
         ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function react(Request $request)
+    {
+        $validatedData = $request->validate([
+            'doubtId'  => ['required', 'integer'],
+            'reaction' => ['required', 'string', 'in:useful,clear,explain_in_class_please'],
+        ]);
+        $userId = auth()->user()->id;
+
+        // Check if the user has already reacted with this type to this doubt
+        $existingReaction = DoubtReaction::where('doubt_id', $validatedData['doubtId'])
+            ->where('user_id', $userId)
+            ->where('type', $validatedData['reaction'])
+            ->first();
+
+        if ($existingReaction)
+            throw new Exception("No puedes reaccionar dos veces iguales.");
+
+        DoubtReaction::create([
+            'doubt_id' => $validatedData['doubtId'],
+            'user_id'  => $userId,
+            'type'     => $validatedData['reaction'],
+        ]);
+    }
+
+    private function getReactions($doubts, $user)
+    {
+        $reactionCounts = [];
+        $userReactions = [];
+
+        foreach ($doubts as $doubt) {
+            $reactionCounts[$doubt->id] = [
+                'useful'                  => $doubt->reactions()->where('type', 'useful')->count(),
+                'clear'                   => $doubt->reactions()->where('type', 'clear')->count(),
+                'explain_in_class_please' => $doubt->reactions()->where('type', 'explain_in_class_please')->count(),
+            ];
+
+            $userReactions[$doubt->id] = [
+                'useful'                  => $doubt->reactions()->where('type', 'useful')->where('user_id',
+                    $user->id)->exists(),
+                'clear'                   => $doubt->reactions()->where('type', 'clear')->where('user_id',
+                    $user->id)->exists(),
+                'explain_in_class_please' => $doubt->reactions()->where('type',
+                    'explain_in_class_please')->where('user_id', $user->id)->exists(),
+            ];
+        }
+
+        return [$reactionCounts, $userReactions];
     }
 }

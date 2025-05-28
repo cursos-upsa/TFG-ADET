@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::name('forum.')->prefix('forum')->group(function () {
         Route::get('/', [DoubtController::class, 'index'])->name('index');
+        Route::post('/react', [DoubtController::class, 'react'])->name('react');
     });
 });
 
