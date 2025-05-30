@@ -2,13 +2,9 @@ import React from 'react';
 import ValidationNotification from './ValidationNotification';
 import ReactionNotification from './ReactionNotification';
 
-export default function Notifications({ notifications }) {
+const Notifications = ({notifications}) => {
     if (!notifications || notifications.length === 0) {
-        return (
-            <div>
-                No tienes notificaciones
-            </div>
-        );
+        return <p>No tienes notificaciones</p>;
     }
 
     return (
@@ -16,13 +12,13 @@ export default function Notifications({ notifications }) {
             {notifications.map((notification, i) => (
                 <div key={i}>
                     <hr/>
-                    {notification.type === 'validation' ? (
-                        <ValidationNotification notification={notification} />
-                    ) : (
-                        <ReactionNotification notification={notification} />
-                    )}
+                    {notification.type === 'validation' ?
+                        <ValidationNotification notification={notification}/> :
+                        <ReactionNotification notification={notification}/>}
                 </div>
             ))}
         </div>
     );
-}
+};
+
+export default Notifications

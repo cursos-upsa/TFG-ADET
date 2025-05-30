@@ -2,7 +2,7 @@ import React from 'react';
 import useNotificationsDialog from '../../Hooks/useNotificationsDialog';
 import Notifications from './Notifications';
 
-export default function NotificationsModal({data, onClose}) {
+const NotificationsModal = ({data, onClose}) => {
     const dialogRef = useNotificationsDialog(data);
 
     const handleClose = () => {
@@ -20,4 +20,6 @@ export default function NotificationsModal({data, onClose}) {
             </div>
         </dialog>
     );
-}
+};
+
+export default NotificationsModal
