@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Doubt;
 use App\Models\DoubtReaction;
 use App\Models\Subject;
+use App\Models\User;
+use App\Services\EmailService;
 use App\Services\OpenAIAssistantService;
 use Exception;
 use Illuminate\Http\Request;
@@ -114,7 +116,8 @@ class DoubtController extends Controller
     /**
      * @throws Exception
      */
-    public function store(int $subjectId, Request $request, OpenAIAssistantService $assistantService)
+    public function store(int $subjectId, Request $request, OpenAIAssistantService $assistantService,
+        EmailService $emailService)
     {
         $validatedData = $request->validate([
             'doubts'   => ['array'],
@@ -125,6 +128,7 @@ class DoubtController extends Controller
             ]
         ]);
         $validatedDoubts = $validatedData['doubts'];
+        $doubtsByUser = [];
 
         foreach ($validatedDoubts as $doubtToStore) {
             if ($doubtToStore['state'] === 'pending')
@@ -138,6 +142,30 @@ class DoubtController extends Controller
             $doubt->comment = $doubtToStore['comment'] ?? null;
             $doubt->reviewer_user_id = auth()->user()->id;
             $doubt->save();
+
+            if (!in_array($doubt->state, ['approved', 'rejected']))
+                continue;
+
+            // Add the doubt to the array of doubts by user to then email them.
+            $user = $doubt->chat->user;
+
+            if (!isset($doubtsByUser[$user->id]))
+                $doubtsByUser[$user->id] = [];
+
+            $doubtsByUser[$user->id][] = [
+                'user'      => [
+                    'name'  => $user->name,
+                    'email' => $user->email,
+                ],
+                'professor' => auth()->user()->name,
+                'doubt'     => [
+                    'question' => $doubt->question,
+                    'answer'   => $doubt->answer,
+                    'comment'  => $doubt->comment,
+                    'state'    => $doubt->state,
+                    'subject'  => $doubt->subject->name,
+                ],
+            ];
         }
         // Get all the doubts maked as addToMemory from the subject and add them to the assistant.
         $subject = Subject::find($subjectId);
@@ -155,6 +183,9 @@ class DoubtController extends Controller
                 extraInstructions: $subject->extra_instructions,
                 doubts: $addToMemoryDoubts
             );
+
+        // Email the users with the doubts.
+        $emailService->sendDoubtsEmail($doubtsByUser);
 
         return redirect()->route('subjects.show', [
             'subjectId' => $subjectId
