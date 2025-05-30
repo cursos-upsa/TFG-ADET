@@ -33,23 +33,33 @@ class SubjectController extends Controller
         if (!$subject)
             throw new NotFoundHttpException();
 
-        return Inertia::render('Subjects/Subject', [
-            'id'                     => $subject->id,
-            'name'                   => $subject->name,
-            'description'            => $subject->description,
-            'created_at'             => $subject->created_at->format('d/m/Y H:i'),
-            'chats'                  => Inertia::defer(fn() => $subject->chats()
+        $userIsProfessor = auth()->user()->isProfessor();
+
+        $props = [
+            'id'          => $subject->id,
+            'name'        => $subject->name,
+            'description' => $subject->description,
+            'created_at'  => $subject->created_at->format('d/m/Y'),
+            'chats'       => Inertia::defer(fn() => $subject->chats()
                 ->where('user_id', auth()->user()->id)
                 ->get(), 'chats'),
-            'unprocessedChatsNumber' => Inertia::defer(fn() => $subject->chats()->where(function ($query) {
+        ];
+
+        if ($userIsProfessor) {
+
+            $props['unprocessedChatsNumber'] = Inertia::defer(fn() => $subject->chats()->where(function ($query) {
                 $query
                     ->WhereColumn('last_activity', '>', 'last_synthesized')
                     ->orWhereNull('last_synthesized');
-            })->count(), 'chats_processing'),
-            'pendingDoubtsNumber'    => Inertia::defer(fn() => Doubt::where('subject_id', $subject->id)->where('state',
-                'pending')->count(),
-                'doubts'),
-        ]);
+            })->count(), 'chats_processing');
+
+            $props['pendingDoubtsNumber'] =
+                Inertia::defer(fn() => Doubt::where('subject_id', $subject->id)->where('state',
+                    'pending')->count(),
+                    'doubts');
+        }
+
+        return Inertia::render('Subjects/Subject', $props);
     }
 
     public function create()
