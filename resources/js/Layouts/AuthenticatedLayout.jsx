@@ -4,10 +4,6 @@ import NotificationsModal from './Partials/NotificationsModal';
 const AuthenticatedLayout = ({children}) => {
     const {auth, notificationsData} = usePage().props;
     const user = auth.user;
-    const userRole = {
-        student: 'Estudiante',
-        professor: 'Profesor'
-    }[user.role];
 
     const onDialogOpen = () => {
         const url = new URL(window.location.href);
@@ -48,15 +44,14 @@ const AuthenticatedLayout = ({children}) => {
                     </li>
                 </ul>
                 <div>
-                    <button onClick={onDialogOpen}
-                            aria-label="Notificaciones">
+                    <button onClick={onDialogOpen}>
                         🔔
                     </button>
                     <NotificationsModal
                         data={notificationsData}
                         onClose={onDialogClose}/>
 
-                    <Link href={route('profile.edit')}>{user.name} - {userRole}</Link>
+                    <Link href={route('profile.edit')}>{user.name}</Link>
                     <Link href={route('logout')} method="post" as="button">Cerrar sesión</Link>
                 </div>
             </nav>
