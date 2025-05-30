@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -31,9 +32,16 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'auth' => [
+            'auth'              => [
                 'user' => $request->user(),
             ],
+            'notificationsData' => function () use ($request) {
+                if ($request->query('showNotifications') === 'true' &&
+                    $request->user())
+                    return (new NotificationController())->getUserNotifications();
+
+                return null;
+            },
         ];
     }
 }

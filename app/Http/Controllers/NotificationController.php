@@ -13,7 +13,7 @@ class NotificationController extends Controller
         'explain_in_class_please' => '🤔 Explicar en clase',
     ];
 
-    public function index()
+    public function getUserNotifications()
     {
         // Get the last 10 validated or rejected doubts form chats of the user.
         $userId = auth()->user()->id;
@@ -61,11 +61,9 @@ class NotificationController extends Controller
             });
 
         // Combinar los arrays y ordenar por updated_at
-        $notifications = $doubts->concat($doubtReactions)
+        return $doubts->concat($doubtReactions)
             ->sortByDesc('updated_at')
             ->values()
             ->all();
-
-        dd($notifications);
     }
 }

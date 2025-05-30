@@ -52,10 +52,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DoubtController::class, 'index'])->name('index');
         Route::post('/react', [DoubtController::class, 'react'])->name('react');
     });
-
-    Route::name('notifications.')->prefix('notifications')->group(function () {
-        Route::get('/', [NotificationController::class, 'index'])->name('index');
-    });
 });
 
 require __DIR__.'/auth.php';
