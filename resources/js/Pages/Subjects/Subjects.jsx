@@ -4,10 +4,6 @@ import JustProfessor from "@/Layouts/JustProfessor.jsx";
 
 const Subjects = ({subjects}) => {
 
-    const showSubject = (subjectId) => {
-        router.get(route('subjects.show', {subjectId}))
-    }
-
     const deleteSubject = (e, subjectId) => {
         e.stopPropagation();  // Avoid triggering the parent's <li> click event.
 
@@ -33,12 +29,13 @@ const Subjects = ({subjects}) => {
 
             <ul>
                 {subjects.map((subject) => (
-                    <li key={subject.id} onClick={() => showSubject(subject.id)}>
-                        <b>{subject.name}</b> {subject.description}
+                    <li key={subject.id}>
+                        <Link href={route('subjects.show', {subjectId: subject.id})}>
+                            <b>{subject.name}</b> {subject.description}
+                        </Link>
                         <button onClick={(e) => {
                             deleteSubject(e, subject.id);
-                        }}>
-                            Eliminar
+                        }}>Eliminar
                         </button>
                     </li>
                 ))}
