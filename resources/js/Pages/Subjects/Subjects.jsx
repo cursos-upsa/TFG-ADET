@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, Link, router} from "@inertiajs/react";
+import JustProfessor from "@/Layouts/JustProfessor.jsx";
 
 const Subjects = ({subjects}) => {
 
@@ -21,9 +22,11 @@ const Subjects = ({subjects}) => {
 
             <h1>Sus asignaturas</h1>
 
-            <Link href={route('subjects.create')}>
-                <button>Crear nueva asignatura</button>
-            </Link>
+            <JustProfessor>
+                <Link href={route('subjects.create')}>
+                    <button>Crear nueva asignatura</button>
+                </Link>
+            </JustProfessor>
 
             {subjects.length === 0 &&
                 <p>Aún no hay ninguna asignatura.</p>}
