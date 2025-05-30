@@ -19,6 +19,8 @@ const Subjects = ({subjects}) => {
         <AuthenticatedLayout>
             <Head title={"Asignaturas"}/>
 
+            <h1>Sus asignaturas</h1>
+
             <Link href={route('subjects.create')}>
                 <button>Crear nueva asignatura</button>
             </Link>
