@@ -1,11 +1,24 @@
-import {Link, usePage} from '@inertiajs/react';
+import {Link, usePage, router} from '@inertiajs/react';
+import NotificationsModal from './Partials/NotificationsModal';
 
 export default function AuthenticatedLayout({children}) {
-    const user = usePage().props.auth.user;
+    const {auth, notificationsData} = usePage().props;
+    const user = auth.user;
     const userRole = {
         student: 'Estudiante',
         professor: 'Profesor'
     }[user.role];
+
+    const onDialogClose = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('showNotifications');
+
+        router.get(url.pathname + url.search, {}, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true
+        });
+    }
 
     return (
         <div>
@@ -25,6 +38,19 @@ export default function AuthenticatedLayout({children}) {
                     </li>
                 </ul>
                 <div>
+                    <button
+                        onClick={() => {
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('showNotifications', 'true');
+                            router.get(url.pathname + url.search, {}, {
+                                preserveState: true,
+                                preserveScroll: true
+                            });
+                        }}
+                        aria-label="Notificaciones"
+                    >
+                        🔔
+                    </button>
                     <Link href={route('profile.edit')}>{user.name} - {userRole}</Link>
                     <Link href={route('logout')} method="post" as="button">Cerrar sesión</Link>
                 </div>
@@ -32,6 +58,10 @@ export default function AuthenticatedLayout({children}) {
             <main>
                 {children}
             </main>
+
+            <NotificationsModal
+                data={notificationsData}
+                onClose={onDialogClose}/>
         </div>
     );
 }
