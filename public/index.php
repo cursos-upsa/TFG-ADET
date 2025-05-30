@@ -3,6 +3,10 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
+// Set maximum execution time to 240 seconds,
+// for when a response from the OpenAI API takes longer.
+ini_set('max_execution_time', 240);
+
 define('LARAVEL_START', microtime(true));
 
 // Determine if the application is in maintenance mode...
