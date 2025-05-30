@@ -1,13 +1,23 @@
 import {Link, usePage, router} from '@inertiajs/react';
 import NotificationsModal from './Partials/NotificationsModal';
 
-export default function AuthenticatedLayout({children}) {
+const AuthenticatedLayout = ({children}) => {
     const {auth, notificationsData} = usePage().props;
     const user = auth.user;
     const userRole = {
         student: 'Estudiante',
         professor: 'Profesor'
     }[user.role];
+
+    const onDialogOpen = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('showNotifications', 'true');
+
+        router.get(url.pathname + url.search, {}, {
+            preserveState: true,
+            preserveScroll: true
+        });
+    }
 
     const onDialogClose = () => {
         const url = new URL(window.location.href);
@@ -38,30 +48,28 @@ export default function AuthenticatedLayout({children}) {
                     </li>
                 </ul>
                 <div>
-                    <button
-                        onClick={() => {
-                            const url = new URL(window.location.href);
-                            url.searchParams.set('showNotifications', 'true');
-                            router.get(url.pathname + url.search, {}, {
-                                preserveState: true,
-                                preserveScroll: true
-                            });
-                        }}
-                        aria-label="Notificaciones"
-                    >
+                    <button onClick={onDialogOpen}
+                            aria-label="Notificaciones">
                         🔔
                     </button>
+                    <NotificationsModal
+                        data={notificationsData}
+                        onClose={onDialogClose}/>
+
                     <Link href={route('profile.edit')}>{user.name} - {userRole}</Link>
                     <Link href={route('logout')} method="post" as="button">Cerrar sesión</Link>
                 </div>
             </nav>
+
             <main>
                 {children}
             </main>
 
-            <NotificationsModal
-                data={notificationsData}
-                onClose={onDialogClose}/>
+            <footer>
+                Enrique Redondo Cortés, 2025
+            </footer>
         </div>
     );
-}
+};
+
+export default AuthenticatedLayout
