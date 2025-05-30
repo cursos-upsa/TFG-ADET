@@ -25,13 +25,14 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::name('subjects.')->prefix('subjects')->group(function () {
         Route::get('/', [SubjectController::class, 'index'])->name('index');
-        Route::get('/{subjectId}', [SubjectController::class, 'show'])->name('show');
 
         Route::middleware('professor')->group(function () {
             Route::get('/create', [SubjectController::class, 'create'])->name('create');
             Route::post('/store', [SubjectController::class, 'store'])->name('store');
             Route::delete('/{subjectId}', [SubjectController::class, 'destroy'])->name('destroy');
         });
+
+        Route::get('/{subjectId}', [SubjectController::class, 'show'])->name('show');
     });
 
     Route::name('chats.')->prefix('chats')->group(function () {
