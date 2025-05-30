@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DoubtController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::name('forum.')->prefix('forum')->group(function () {
         Route::get('/', [DoubtController::class, 'index'])->name('index');
         Route::post('/react', [DoubtController::class, 'react'])->name('react');
+    });
+
+    Route::name('notifications.')->prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
     });
 });
 
