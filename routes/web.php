@@ -25,12 +25,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::name('subjects.')->prefix('subjects')->group(function () {
         Route::get('/', [SubjectController::class, 'index'])->name('index');
-
-        Route::get('/create', [SubjectController::class, 'create'])->name('create');
-        Route::post('/store', [SubjectController::class, 'store'])->name('store');
-
         Route::get('/{subjectId}', [SubjectController::class, 'show'])->name('show');
-        Route::delete('/{subjectId}', [SubjectController::class, 'destroy'])->name('destroy');
+
+        Route::middleware('professor')->group(function () {
+            Route::get('/create', [SubjectController::class, 'create'])->name('create');
+            Route::post('/store', [SubjectController::class, 'store'])->name('store');
+            Route::delete('/{subjectId}', [SubjectController::class, 'destroy'])->name('destroy');
+        });
     });
 
     Route::name('chats.')->prefix('chats')->group(function () {
@@ -40,12 +41,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{chatId}', [ChatController::class, 'show'])->name('show');
         Route::delete('/{chatId}', [ChatController::class, 'destroy'])->name('destroy');
 
-        Route::get('/process/{subjectId}', [ChatController::class, 'process'])->name('process');
+        Route::middleware('professor')->group(function () {
+            Route::get('/process/{subjectId}', [ChatController::class, 'process'])->name('process');
+        });
     });
 
     Route::name('doubts.')->prefix('doubts')->group(function () {
-        Route::get('/{subjectId}', [DoubtController::class, 'show'])->name('show');
-        Route::post('/{subjectId}', [DoubtController::class, 'store'])->name('store');
+        Route::middleware('professor')->group(function () {
+            Route::get('/{subjectId}', [DoubtController::class, 'show'])->name('show');
+            Route::post('/{subjectId}', [DoubtController::class, 'store'])->name('store');
+        });
     });
 
     Route::name('forum.')->prefix('forum')->group(function () {
