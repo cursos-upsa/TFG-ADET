@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Doubt;
 use App\Models\DoubtReaction;
 use App\Models\Subject;
-use App\Models\User;
 use App\Services\EmailService;
 use App\Services\OpenAIAssistantService;
 use Exception;
