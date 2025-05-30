@@ -24,7 +24,7 @@ class NotificationController extends Controller
         })
             ->latest()
             ->take(10)
-            ->select('doubts.id', 'doubts.state', 'doubts.question', 'doubts.answer', 'doubts.updated_at')
+            ->select('doubts.id', 'state', 'question', 'answer', 'comment', 'doubts.updated_at')
             ->get()
             ->map(function ($doubt) {
                 return [
@@ -33,6 +33,7 @@ class NotificationController extends Controller
                     'state'      => $doubt->state,
                     'question'   => $doubt->question,
                     'answer'     => $doubt->answer,
+                    'comment'    => $doubt->comment,
                     'updated_at' => $doubt->updated_at,
                 ];
             });
