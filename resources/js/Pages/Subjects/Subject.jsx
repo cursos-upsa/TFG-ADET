@@ -35,7 +35,7 @@ const Subject = ({
 
             <JustProfessor>
                 <div className="bg-indigo-50 rounded-lg p-6 mb-8 border border-indigo-100">
-                    <h3 className="text-xl font-semibold text-indigo-800 mb-4">Área de Profesor</h3>
+                    <h3 className="text-xl font-semibold text-indigo-800 mb-4">Área de profesor</h3>
 
                     <div className="space-y-6">
                         <div className="bg-white rounded-lg p-4 border border-gray-200">

@@ -17,7 +17,7 @@ const MatriculationList = ({students, studentIds, onStudentsChange}) => {
                 {students.map(({id, name}) => (
                     <li key={id}>
                         <label>
-                            <input
+                            <input className={"bg-gray-200"}
                                 type="checkbox"
                                 name="studentIds"
                                 value={id}

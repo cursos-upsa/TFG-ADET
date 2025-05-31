@@ -41,6 +41,14 @@
         @apply border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
     }
 
+    input, textarea {
+        @apply box-border
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+        @apply bg-gray-200
+    }
+
     button {
         @apply bg-indigo-600 text-white px-4 py-2 rounded-md
                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 disabled:opacity-50
