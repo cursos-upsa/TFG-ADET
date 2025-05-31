@@ -36,6 +36,9 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
 
             <h3>Chat para la asignatura <i>{subjectName}</i>.</h3>
             <Deferred fallback={<Loader>Cargando conversación...</Loader>} data={"messages"}>
+                {messages?.length === 0 && !processing ?
+                    <p>¡Hola! ¿Tienes alguna duda? Estoy aquí para ayudarte.</p> :
+                    <></>}
                 {messages?.map((message, index) => {
                         if (index % 2 === 0) {
                             return <p key={index}><b>{message}</b></p>;
