@@ -22,7 +22,7 @@ const Chats = ({chats, subjectId}) => {
                     {chats.map((chat) => (
                         <li key={chat.id}>
                             <Link href={route('chats.show', {chatId: chat.id})}>
-                                Chat {chat.id}
+                                Chat. {chat.last_activity_formatted}
                             </Link>
                             <button onClick={(e) => {
                                 deleteChat(e, chat.id);
