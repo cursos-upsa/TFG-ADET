@@ -42,6 +42,24 @@ class SubjectController extends Controller
             'created_at'  => $subject->created_at->format('d/m/Y'),
             'chats'       => Inertia::defer(fn() => $subject->chats()
                 ->where('user_id', auth()->user()->id)
+                ->select('id')
+                ->selectRaw(/** @lang GenericSQL */ <<<SQL
+                CONCAT(
+                    ELT(
+                        WEEKDAY(last_activity) + 1,
+                        'lunes',
+                        'martes',
+                        'miércoles',
+                        'jueves',
+                        'viernes',
+                        'sábado',
+                        'domingo'
+                    ),
+                    ', ',
+                    DATE_FORMAT(last_activity, "%d-%m-%Y %H:%i")
+                ) AS last_activity_formatted
+                SQL
+                )
                 ->get(), 'chats'),
         ];
 

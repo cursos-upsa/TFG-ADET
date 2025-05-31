@@ -33,13 +33,13 @@ const Chats = ({chats, subjectId}) => {
                     {chats.map((chat) => (
                         <li key={chat.id} className="bg-gray-50 rounded-lg border border-gray-200">
                             <div className="flex justify-between items-center p-4">
-                                <Link 
+                                <Link
                                     href={route('chats.show', {chatId: chat.id})}
                                     className="text-indigo-600 font-medium"
                                 >
-                                    Chat {chat.id}
+                                    Chat. {chat.last_activity_formatted}
                                 </Link>
-                                <button 
+                                <button
                                     onClick={(e) => {
                                         deleteChat(e, chat.id);
                                     }}
