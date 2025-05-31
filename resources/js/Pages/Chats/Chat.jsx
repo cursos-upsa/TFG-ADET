@@ -40,17 +40,23 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
                 </h3>
             </div>
 
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 mb-6 h-96 overflow-y-auto">
-                <Deferred fallback={<div className="flex justify-center items-center h-full"><Loader>Cargando conversación...</Loader></div>} data={"messages"}>
+            <div className="bg-gray-100 rounded-lg border border-gray-200 p-4 mb-6 h-96 overflow-y-auto">
+                <Deferred fallback={<div className="flex justify-center items-center h-full"><Loader>Cargando
+                    conversación...</Loader></div>} data={"messages"}>
                     <div className="space-y-4">
                         {messages?.length === 0 && !processing ?
-                            <p>¡Hola! ¿Tienes alguna duda? Estoy aquí para ayudarte.</p> :
+                            <div className="flex justify-start">
+                                <div className="bg-white p-3 rounded-lg max-w-3/4 border border-gray-200">
+                                    <p className="m-0">¡Hola! ¿Tienes alguna duda? Estoy aquí para ayudarte.</p>
+                                </div>
+                            </div> :
                             <></>}
                         {messages?.map((message, index) => {
                                 if (index % 2 === 0) {
                                     return (
                                         <div key={index} className="flex justify-end">
-                                            <div className="bg-indigo-100 text-indigo-800 p-3 rounded-lg max-w-3/4 border border-indigo-200">
+                                            <div
+                                                className="bg-indigo-100 text-indigo-800 p-3 rounded-lg max-w-3/4 border border-indigo-200">
                                                 <p className="m-0 font-medium">{message}</p>
                                             </div>
                                         </div>
@@ -68,7 +74,8 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
                         {processing && data.newUserMessage ? (
                             <>
                                 <div className="flex justify-end">
-                                    <div className="bg-indigo-100 text-indigo-800 p-3 rounded-lg max-w-3/4 border border-indigo-200">
+                                    <div
+                                        className="bg-indigo-100 text-indigo-800 p-3 rounded-lg max-w-3/4 border border-indigo-200">
                                         <p className="m-0 font-medium">{data.newUserMessage}</p>
                                     </div>
                                 </div>
@@ -84,7 +91,7 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
             <form onSubmit={submit} className="mt-4">
                 <div className="flex items-center space-x-2">
                     <div className="flex-grow">
-                        <label className="block w-full">
+                        <label className="flex w-full">
                             <input
                                 name="newUserMessage"
                                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

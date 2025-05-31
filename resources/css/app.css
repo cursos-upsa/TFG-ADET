@@ -9,7 +9,7 @@
 
     /* Basic typography */
     body {
-        @apply m-0 bg-gray-50 text-gray-800 font-sans leading-relaxed;
+        @apply m-0 bg-gray-100 text-gray-800 font-sans leading-relaxed;
     }
 
     h1 {
