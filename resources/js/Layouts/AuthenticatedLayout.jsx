@@ -81,7 +81,7 @@ const AuthenticatedLayout = ({children}) => {
 
             <main className="flex-1 overflow-auto mt-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                    <div className="bg-white rounded-lg p-4 border border-gray-200 mb-12">
                         {children}
                     </div>
                 </div>

@@ -33,9 +33,9 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
         <AuthenticatedLayout>
             <Head title="Chat"/>
 
-            <div className="h-[81vh] grid grid-rows-[auto_1fr_auto]">
-                <div className="mb-6">
-                    <h3 className="text-xl font-semibold text-indigo-700">
+            <div className="h-[79vh] grid grid-rows-[auto_1fr_auto]">
+                <div className="mb-2">
+                    <h3 className="text-xl font-semibold text-indigo-700 my-2">
                         Chat para la asignatura <i className="font-medium text-indigo-600">{subjectName}</i>
                     </h3>
                 </div>
@@ -44,13 +44,19 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
                     <Deferred fallback={<div className="flex justify-center items-center h-full"><Loader>Cargando
                         conversación...</Loader></div>} data={"messages"}>
                         <div className="space-y-4">
-
+                            {messages?.length === 0 && !processing ?
+                                <div className="flex justify-start">
+                                    <div className="bg-white p-3 rounded-lg max-w-3/4 border border-gray-200">
+                                        <p className="m-0">¡Hola! Estoy aquí para ayudarte.</p>
+                                    </div>
+                                </div> :
+                                <></>}
                             {messages?.map((message, index) => {
                                     if (index % 2 === 0) {
                                         return (
                                             <div key={index} className="flex justify-end">
                                                 <div
-                                                    className="bg-indigo-100 text-indigo-800 p-3 rounded-lg max-w-3/4 border border-indigo-200">
+                                                    className="bg-indigo-100 text-indigo-800 p-2 rounded-lg max-w-3/4 border border-indigo-200">
                                                     <p className="m-0 font-medium">{message}</p>
                                                 </div>
                                             </div>
@@ -58,7 +64,7 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
                                     }
                                     return (
                                         <div key={index} className="flex justify-start">
-                                            <div className="bg-white p-3 rounded-lg max-w-3/4 border border-gray-200">
+                                            <div className="bg-white p-2 rounded-lg max-w-3/4 border border-gray-200">
                                                 <p className="m-0">{message}</p>
                                             </div>
                                         </div>
@@ -69,7 +75,7 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
                                 <>
                                     <div className="flex justify-end">
                                         <div
-                                            className="bg-indigo-100 text-indigo-800 p-3 rounded-lg max-w-3/4 border border-indigo-200">
+                                            className="bg-indigo-100 text-indigo-800 p-2 rounded-lg max-w-3/4 border border-indigo-200">
                                             <p className="m-0 font-medium">{data.newUserMessage}</p>
                                         </div>
                                     </div>
