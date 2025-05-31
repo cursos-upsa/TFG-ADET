@@ -33,7 +33,7 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
         <AuthenticatedLayout>
             <Head title="Chat"/>
 
-            <div className="h-[79vh] grid grid-rows-[auto_1fr_auto]">
+            <div className="h-[78vh] grid grid-rows-[auto_1fr_auto]">
                 <div className="mb-2">
                     <h3 className="text-xl font-semibold text-indigo-700 my-2">
                         Chat para la asignatura <i className="font-medium text-indigo-600">{subjectName}</i>
