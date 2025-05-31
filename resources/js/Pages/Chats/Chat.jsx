@@ -43,6 +43,9 @@ const Chat = ({subjectId, subjectName, threadId, messages}) => {
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 mb-6 h-96 overflow-y-auto">
                 <Deferred fallback={<div className="flex justify-center items-center h-full"><Loader>Cargando conversación...</Loader></div>} data={"messages"}>
                     <div className="space-y-4">
+                        {messages?.length === 0 && !processing ?
+                            <p>¡Hola! ¿Tienes alguna duda? Estoy aquí para ayudarte.</p> :
+                            <></>}
                         {messages?.map((message, index) => {
                                 if (index % 2 === 0) {
                                     return (
