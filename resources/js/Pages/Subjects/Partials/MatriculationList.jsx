@@ -14,7 +14,7 @@ const MatriculationList = ({students, studentIds, onStudentsChange}) => {
         <div>
             <h4>Escoja alumnos para matricular en la nueva asignatura:</h4>
             <ul>
-                {students.map(({id, name}) => (
+                {students?.map(({id, name}) => (
                     <li key={id}>
                         <label>
                             <input className={"bg-gray-200"}
