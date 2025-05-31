@@ -33,10 +33,12 @@ const Subjects = ({subjects}) => {
                         <Link href={route('subjects.show', {subjectId: subject.id})}>
                             <b>{subject.name}</b>
                         </Link>
-                        <button onClick={(e) => {
-                            deleteSubject(e, subject.id);
-                        }}>Eliminar
-                        </button>
+                        <JustProfessor>
+                            <button onClick={(e) => {
+                                deleteSubject(e, subject.id);
+                            }}>Eliminar
+                            </button>
+                        </JustProfessor>
                     </li>
                 ))}
             </ul>
