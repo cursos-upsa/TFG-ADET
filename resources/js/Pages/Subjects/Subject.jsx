@@ -30,9 +30,6 @@ const Subject = ({
                     <DoubtProcessingControl unprocessedChatsNumber={unprocessedChatsNumber}
                                             subjectId={id}/>
                 </Deferred>
-            </JustProfessor>
-
-            <JustProfessor>
                 <Deferred fallback={<Loader>Cargando...</Loader>} data={"pendingDoubtsNumber"}>
                     {pendingDoubtsNumber === 0 ?
                         <p>No hay dudas pendientes de los alumnos para esta asignatura.</p> :
