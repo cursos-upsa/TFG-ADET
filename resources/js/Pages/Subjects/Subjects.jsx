@@ -46,7 +46,7 @@ const Subjects = ({subjects}) => {
                                     href={route('subjects.show', {subjectId: subject.id})}
                                     className="text-indigo-600 font-medium"
                                 >
-                                    <span className="font-bold">{subject.name}</span> - {subject.description}
+                                    <span className="font-bold">{subject.name}</span>
                                 </Link>
                                 <button 
                                     onClick={(e) => {
