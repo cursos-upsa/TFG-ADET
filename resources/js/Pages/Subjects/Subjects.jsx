@@ -31,7 +31,7 @@ const Subjects = ({subjects}) => {
                 {subjects.map((subject) => (
                     <li key={subject.id}>
                         <Link href={route('subjects.show', {subjectId: subject.id})}>
-                            <b>{subject.name}</b> {subject.description}
+                            <b>{subject.name}</b>
                         </Link>
                         <button onClick={(e) => {
                             deleteSubject(e, subject.id);
