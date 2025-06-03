@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DoubtController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
