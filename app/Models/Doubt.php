@@ -23,7 +23,7 @@ class Doubt extends Model
     ];
 
     protected $casts = [
-        'added_to_memory' => 'boolean',
+        'added_to_memory'    => 'boolean',
         'reviewed_timestamp' => 'datetime',
     ];
 

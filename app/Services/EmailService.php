@@ -8,7 +8,7 @@ class EmailService
 {
     public function sendDoubtsEmail(array $doubtsByUser): void
     {
-        foreach ($doubtsByUser as $userId => $doubts) {
+        foreach ($doubtsByUser as $doubts) {
             if (empty($doubts)) {
                 continue;
             }
@@ -54,11 +54,9 @@ class EmailService
                     "</p>";
             }
 
-            if ($state === 'Aprobada') {
-                $emailContent .= "<p><strong>Estado:</strong> <span style='font-weight: bold; color: $stateColor;'>$state</span> - El profesor ha verificado que la respuesta del chatbot es correcta.</p>";
-            } else {
-                $emailContent .= "<p><strong>Estado:</strong> <span style='font-weight: bold; color: $stateColor;'>$state</span> - El profesor ha indicado que la respuesta del chatbot no es correcta o no está completa</p>";
-            }
+            $emailContent .= $state === 'Aprobada' ?
+                "<p><strong>Estado:</strong> <span style='font-weight: bold; color: $stateColor;'>$state</span> - El profesor ha verificado que la respuesta del chatbot es correcta.</p>" :
+                "<p><strong>Estado:</strong> <span style='font-weight: bold; color: $stateColor;'>$state</span> - El profesor ha indicado que la respuesta del chatbot no es correcta o no está completa</p>";
 
             $emailContent .= "</div>";
         }

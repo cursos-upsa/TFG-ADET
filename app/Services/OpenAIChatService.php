@@ -59,6 +59,17 @@ class OpenAIChatService
         return $messages;
     }
 
+    private function getMessageText(array $content): string
+    {
+        $messageContent = '';
+
+        foreach ($content as $item)
+            if ($item->type === 'text')
+                $messageContent .= $item->text->value;
+
+        return $messageContent;
+    }
+
     /**
      * @throws Exception
      */
@@ -187,16 +198,5 @@ class OpenAIChatService
 
         // Assume other events as waiting for completion.
         return null;
-    }
-
-    private function getMessageText(array $content): string
-    {
-        $messageContent = '';
-
-        foreach ($content as $item)
-            if ($item->type === 'text')
-                $messageContent .= $item->text->value;
-
-        return $messageContent;
     }
 }

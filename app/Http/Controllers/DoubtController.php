@@ -99,6 +99,31 @@ class DoubtController extends Controller
         ]);
     }
 
+    private function getReactions($doubts, $user): array
+    {
+        $reactionCounts = [];
+        $userReactions = [];
+
+        foreach ($doubts as $doubt) {
+            $reactionCounts[$doubt->id] = [
+                'useful'                  => $doubt->reactions()->where('type', 'useful')->count(),
+                'clear'                   => $doubt->reactions()->where('type', 'clear')->count(),
+                'explain_in_class_please' => $doubt->reactions()->where('type', 'explain_in_class_please')->count(),
+            ];
+
+            $userReactions[$doubt->id] = [
+                'useful'                  => $doubt->reactions()->where('type', 'useful')->where('user_id',
+                    $user->id)->exists(),
+                'clear'                   => $doubt->reactions()->where('type', 'clear')->where('user_id',
+                    $user->id)->exists(),
+                'explain_in_class_please' => $doubt->reactions()->where('type',
+                    'explain_in_class_please')->where('user_id', $user->id)->exists(),
+            ];
+        }
+
+        return [$reactionCounts, $userReactions];
+    }
+
     public function show(int $subjectId): Response
     {
         $subject = Subject::find($subjectId);
@@ -218,30 +243,5 @@ class DoubtController extends Controller
             'user_id'  => $userId,
             'type'     => $validatedData['reaction'],
         ]);
-    }
-
-    private function getReactions($doubts, $user): array
-    {
-        $reactionCounts = [];
-        $userReactions = [];
-
-        foreach ($doubts as $doubt) {
-            $reactionCounts[$doubt->id] = [
-                'useful'                  => $doubt->reactions()->where('type', 'useful')->count(),
-                'clear'                   => $doubt->reactions()->where('type', 'clear')->count(),
-                'explain_in_class_please' => $doubt->reactions()->where('type', 'explain_in_class_please')->count(),
-            ];
-
-            $userReactions[$doubt->id] = [
-                'useful'                  => $doubt->reactions()->where('type', 'useful')->where('user_id',
-                    $user->id)->exists(),
-                'clear'                   => $doubt->reactions()->where('type', 'clear')->where('user_id',
-                    $user->id)->exists(),
-                'explain_in_class_please' => $doubt->reactions()->where('type',
-                    'explain_in_class_please')->where('user_id', $user->id)->exists(),
-            ];
-        }
-
-        return [$reactionCounts, $userReactions];
     }
 }

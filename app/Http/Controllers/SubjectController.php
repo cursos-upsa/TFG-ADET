@@ -82,18 +82,6 @@ class SubjectController extends Controller
         return Inertia::render('Subjects/Subject', $props);
     }
 
-    public function create(): Response
-    {
-        return Inertia::render('Subjects/CreateSubject',
-            [
-                'students' => Inertia::defer(fn() => User::where('role', 'student')
-                    ->select('id', 'name')
-                    ->orderBy('name')
-                    ->get(),
-                    'students'),
-            ]);
-    }
-
     public function edit(string $id)
     {
         // Render the form to edit the subject with the given id.
@@ -102,7 +90,8 @@ class SubjectController extends Controller
     /**
      * @throws Exception
      */
-    public function store(Request $request, OpenAIAssistantService $assistantService, OpenAIFilesService $filesService): RedirectResponse
+    public function store(Request $request, OpenAIAssistantService $assistantService,
+        OpenAIFilesService $filesService): RedirectResponse
     {
         $validatedData = $request->validate([
             'name'               => ['required', 'string', 'max:255'],
@@ -144,6 +133,18 @@ class SubjectController extends Controller
         }
 
         return redirect()->route('subjects.index');
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('Subjects/CreateSubject',
+            [
+                'students' => Inertia::defer(fn() => User::where('role', 'student')
+                    ->select('id', 'name')
+                    ->orderBy('name')
+                    ->get(),
+                    'students'),
+            ]);
     }
 
     public function update(string $id, Request $request)

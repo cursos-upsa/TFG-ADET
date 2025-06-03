@@ -38,29 +38,6 @@ class ChatController extends Controller
     /**
      * @throws Exception
      */
-    public function create(string $subjectId, OpenAIChatService $chatService): RedirectResponse
-    {
-        $subject = Subject::find($subjectId);
-
-        if (!$subject)
-            throw new NotFoundHttpException();
-
-        $threadId = $chatService->createThread();
-
-        $chat = Chat::create([
-            'subject_id'    => $subject->id,
-            'thread_id'     => $threadId,
-            'last_activity' => now()
-        ]);
-
-        return redirect()->route('chats.show', [
-            'chatId' => $chat->id
-        ]);
-    }
-
-    /**
-     * @throws Exception
-     */
     public function store(Request $request, OpenAIChatService $chatService): Response
     {
         $validatedData = $request->validate([
@@ -151,6 +128,29 @@ class ChatController extends Controller
 
         return redirect()->route('subjects.show', [
             'subjectId' => $subject->id
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function create(string $subjectId, OpenAIChatService $chatService): RedirectResponse
+    {
+        $subject = Subject::find($subjectId);
+
+        if (!$subject)
+            throw new NotFoundHttpException();
+
+        $threadId = $chatService->createThread();
+
+        $chat = Chat::create([
+            'subject_id'    => $subject->id,
+            'thread_id'     => $threadId,
+            'last_activity' => now()
+        ]);
+
+        return redirect()->route('chats.show', [
+            'chatId' => $chat->id
         ]);
     }
 }

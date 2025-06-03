@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Subject;
+use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Chat>
+ * @extends Factory<Chat>
  */
 class ChatFactory extends Factory
 {
@@ -22,12 +22,12 @@ class ChatFactory extends Factory
         $userId = User::count() > 0 ? User::inRandomOrder()->first()->id : 1;
 
         return [
-            'thread_id' => fake()->unique()->uuid,
-            'subject_id' => 1,
-            'user_id' => $userId,
-            'last_activity' => fake()->dateTime(),
+            'thread_id'                   => fake()->unique()->uuid,
+            'subject_id'                  => 1,
+            'user_id'                     => $userId,
+            'last_activity'               => fake()->dateTime(),
             'last_synthesized_message_id' => fake()->unique()->uuid,
-            'last_synthesized' => fake()->dateTime(),
+            'last_synthesized'            => fake()->dateTime(),
         ];
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subject>
+ * @extends Factory<Subject>
  */
 class SubjectFactory extends Factory
 {
@@ -17,12 +18,12 @@ class SubjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'assistant_id' => fake()->unique()->uuid,
-            'vector_store_id' => fake()->unique()->uuid,
-            'name' => fake()->unique()->name,
-            'description' => fake()->unique()->sentence,
+            'assistant_id'       => fake()->unique()->uuid,
+            'vector_store_id'    => fake()->unique()->uuid,
+            'name'               => fake()->unique()->name,
+            'description'        => fake()->unique()->sentence,
             'extra_instructions' => fake()->unique()->sentence,
-            'user_id' => 1,
+            'user_id'            => 1,
         ];
     }
 }
