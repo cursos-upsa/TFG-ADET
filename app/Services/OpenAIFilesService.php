@@ -54,6 +54,20 @@ class OpenAIFilesService
     /**
      * @throws Exception
      */
+    private function attemptCleanupFilesOnError(array $fileIds): void
+    {
+        foreach ($fileIds as $fileId) {
+            try {
+                $this->client->files()->delete($fileId);
+            } catch (Exception $e) {
+                throw new Exception("Error al intentar limpiar archivo huérfano con ID: $fileId.");
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     public function createVectorStore(string $vectorStoreName, array $openaiFileIds): ?string
     {
         if (empty($openaiFileIds))
@@ -97,20 +111,6 @@ class OpenAIFilesService
                 $this->client->files()->delete($fileObj->id);
         } catch (Exception $e) {
             throw new Exception("Error al eliminar los archivos del vector store con ID: $vectorStoreId");
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function attemptCleanupFilesOnError(array $fileIds): void
-    {
-        foreach ($fileIds as $fileId) {
-            try {
-                $this->client->files()->delete($fileId);
-            } catch (Exception $e) {
-                throw new Exception("Error al intentar limpiar archivo huérfano con ID: $fileId.");
-            }
         }
     }
 }

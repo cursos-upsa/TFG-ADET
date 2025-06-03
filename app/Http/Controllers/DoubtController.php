@@ -8,12 +8,14 @@ use App\Models\Subject;
 use App\Services\EmailService;
 use App\Services\OpenAIAssistantService;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class DoubtController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         // Get the user's subjects
         $user = auth()->user();
@@ -97,7 +99,32 @@ class DoubtController extends Controller
         ]);
     }
 
-    public function show(int $subjectId)
+    private function getReactions($doubts, $user): array
+    {
+        $reactionCounts = [];
+        $userReactions = [];
+
+        foreach ($doubts as $doubt) {
+            $reactionCounts[$doubt->id] = [
+                'useful'                  => $doubt->reactions()->where('type', 'useful')->count(),
+                'clear'                   => $doubt->reactions()->where('type', 'clear')->count(),
+                'explain_in_class_please' => $doubt->reactions()->where('type', 'explain_in_class_please')->count(),
+            ];
+
+            $userReactions[$doubt->id] = [
+                'useful'                  => $doubt->reactions()->where('type', 'useful')->where('user_id',
+                    $user->id)->exists(),
+                'clear'                   => $doubt->reactions()->where('type', 'clear')->where('user_id',
+                    $user->id)->exists(),
+                'explain_in_class_please' => $doubt->reactions()->where('type',
+                    'explain_in_class_please')->where('user_id', $user->id)->exists(),
+            ];
+        }
+
+        return [$reactionCounts, $userReactions];
+    }
+
+    public function show(int $subjectId): Response
     {
         $subject = Subject::find($subjectId);
 
@@ -116,7 +143,7 @@ class DoubtController extends Controller
      * @throws Exception
      */
     public function store(int $subjectId, Request $request, OpenAIAssistantService $assistantService,
-        EmailService $emailService)
+        EmailService $emailService): RedirectResponse
     {
         $validatedData = $request->validate([
             'doubts'   => ['array'],
@@ -194,7 +221,7 @@ class DoubtController extends Controller
     /**
      * @throws Exception
      */
-    public function react(Request $request)
+    public function react(Request $request): void
     {
         $validatedData = $request->validate([
             'doubtId'  => ['required', 'integer'],
@@ -216,30 +243,5 @@ class DoubtController extends Controller
             'user_id'  => $userId,
             'type'     => $validatedData['reaction'],
         ]);
-    }
-
-    private function getReactions($doubts, $user)
-    {
-        $reactionCounts = [];
-        $userReactions = [];
-
-        foreach ($doubts as $doubt) {
-            $reactionCounts[$doubt->id] = [
-                'useful'                  => $doubt->reactions()->where('type', 'useful')->count(),
-                'clear'                   => $doubt->reactions()->where('type', 'clear')->count(),
-                'explain_in_class_please' => $doubt->reactions()->where('type', 'explain_in_class_please')->count(),
-            ];
-
-            $userReactions[$doubt->id] = [
-                'useful'                  => $doubt->reactions()->where('type', 'useful')->where('user_id',
-                    $user->id)->exists(),
-                'clear'                   => $doubt->reactions()->where('type', 'clear')->where('user_id',
-                    $user->id)->exists(),
-                'explain_in_class_please' => $doubt->reactions()->where('type',
-                    'explain_in_class_please')->where('user_id', $user->id)->exists(),
-            ];
-        }
-
-        return [$reactionCounts, $userReactions];
     }
 }

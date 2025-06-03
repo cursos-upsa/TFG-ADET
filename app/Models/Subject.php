@@ -21,6 +21,15 @@ class Subject extends Model
         'user_id',
     ];
 
+    protected static function booted(): void
+    {
+        // Listen for the "creating" event and set the user ID to the current user's ID.
+        static::creating(function (Subject $subject) {
+            if (Auth::check())
+                $subject->user_id = Auth::id();
+        });
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
@@ -34,14 +43,5 @@ class Subject extends Model
     public function doubts(): HasMany
     {
         return $this->hasMany(Doubt::class);
-    }
-
-    protected static function booted(): void
-    {
-        // Listen for the "creating" event and set the user ID to the current user's ID.
-        static::creating(function (Subject $subject) {
-            if (Auth::check())
-                $subject->user_id = Auth::id();
-        });
     }
 }

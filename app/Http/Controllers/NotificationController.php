@@ -4,16 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Doubt;
 use App\Models\DoubtReaction;
+use App\Services\ConstantsService;
 
 class NotificationController extends Controller
 {
-    const REACTION_TRANSLATIONS = [
-        'useful' => '👍 Útil',
-        'clear'  => '👍 Queda claro',
-        'explain_in_class_please' => '🤔 Explicar en clase',
-    ];
-
-    public function getUserNotifications()
+    public function getUserNotifications(): array
     {
         // Get the last 10 validated or rejected doubts form chats of the user.
         $userId = auth()->user()->id;
@@ -56,7 +51,7 @@ class NotificationController extends Controller
                     'id'             => $reaction->id,
                     'doubt_id'       => $reaction->doubt_id,
                     'doubt_question' => $reaction->doubt->question ?? null,
-                    'reaction_type'  => self::REACTION_TRANSLATIONS[$reaction->type],
+                    'reaction_type'  => ConstantsService::REACTION_TRANSLATIONS[$reaction->type],
                     'updated_at'     => $reaction->updated_at,
                 ];
             });

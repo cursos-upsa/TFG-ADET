@@ -9,13 +9,15 @@ use App\Services\OpenAIAssistantService;
 use App\Services\OpenAIChatService;
 use App\Services\OpenAIFilesService;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SubjectController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         $subjects = auth()->user()->subjects()
             ->select('subjects.id', 'subjects.name', 'subjects.description')
@@ -26,7 +28,7 @@ class SubjectController extends Controller
         ]);
     }
 
-    public function show(string $id)
+    public function show(string $id): Response
     {
         $subject = Subject::find($id);
 
@@ -80,18 +82,6 @@ class SubjectController extends Controller
         return Inertia::render('Subjects/Subject', $props);
     }
 
-    public function create()
-    {
-        return Inertia::render('Subjects/CreateSubject',
-            [
-                'students' => Inertia::defer(fn() => User::where('role', 'student')
-                    ->select('id', 'name')
-                    ->orderBy('name')
-                    ->get(),
-                    'students'),
-            ]);
-    }
-
     public function edit(string $id)
     {
         // Render the form to edit the subject with the given id.
@@ -100,7 +90,8 @@ class SubjectController extends Controller
     /**
      * @throws Exception
      */
-    public function store(Request $request, OpenAIAssistantService $assistantService, OpenAIFilesService $filesService)
+    public function store(Request $request, OpenAIAssistantService $assistantService,
+        OpenAIFilesService $filesService): RedirectResponse
     {
         $validatedData = $request->validate([
             'name'               => ['required', 'string', 'max:255'],
@@ -144,6 +135,18 @@ class SubjectController extends Controller
         return redirect()->route('subjects.index');
     }
 
+    public function create(): Response
+    {
+        return Inertia::render('Subjects/CreateSubject',
+            [
+                'students' => Inertia::defer(fn() => User::where('role', 'student')
+                    ->select('id', 'name')
+                    ->orderBy('name')
+                    ->get(),
+                    'students'),
+            ]);
+    }
+
     public function update(string $id, Request $request)
     {
         // Update the subject with the given id.
@@ -153,7 +156,7 @@ class SubjectController extends Controller
      * @throws Exception
      */
     public function destroy(string $id, OpenAIAssistantService $assistantService,
-        OpenAIFilesService $filesService, OpenAIChatService $chatService)
+        OpenAIFilesService $filesService, OpenAIChatService $chatService): void
     {
         $subject = Subject::find($id);
 

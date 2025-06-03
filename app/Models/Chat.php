@@ -21,6 +21,16 @@ class Chat extends Model
         'last_synthesized',
     ];
 
+    protected static function booted(): void
+    {
+        // Listen for the "creating" event and set the user ID to the current user's ID.
+        static::creating(function (Chat $chat) {
+            if (Auth::check() && !$chat->user_id) {
+                $chat->user_id = Auth::id();
+            }
+        });
+    }
+
     function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
@@ -34,15 +44,5 @@ class Chat extends Model
     public function doubts(): HasMany
     {
         return $this->hasMany(Doubt::class);
-    }
-
-    protected static function booted(): void
-    {
-        // Listen for the "creating" event and set the user ID to the current user's ID.
-        static::creating(function (Chat $chat) {
-            if (Auth::check() && !$chat->user_id) {
-                $chat->user_id = Auth::id();
-            }
-        });
     }
 }
