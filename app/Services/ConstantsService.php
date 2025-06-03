@@ -13,8 +13,5 @@ class ConstantsService
         'explain_in_class_please' => '🤔 Explicar en clase',
     ];
 
-    private function __construct()
-    {
-        //
-    }
+    private function __construct() {}
 }
