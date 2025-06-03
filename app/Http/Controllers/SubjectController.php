@@ -82,11 +82,6 @@ class SubjectController extends Controller
         return Inertia::render('Subjects/Subject', $props);
     }
 
-    public function edit(string $id)
-    {
-        // Render the form to edit the subject with the given id.
-    }
-
     /**
      * @throws Exception
      */
@@ -145,11 +140,6 @@ class SubjectController extends Controller
                     ->get(),
                     'students'),
             ]);
-    }
-
-    public function update(string $id, Request $request)
-    {
-        // Update the subject with the given id.
     }
 
     /**
