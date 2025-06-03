@@ -59,17 +59,6 @@ class OpenAIChatService
         return $messages;
     }
 
-    private function getMessageText(array $content): string
-    {
-        $messageContent = '';
-
-        foreach ($content as $item)
-            if ($item->type === 'text')
-                $messageContent .= $item->text->value;
-
-        return $messageContent;
-    }
-
     /**
      * @throws Exception
      */
@@ -170,6 +159,17 @@ class OpenAIChatService
         } catch (Exception $e) {
             throw new Exception("Error en el stream de la run para el thread \"$thread_id\".");
         }
+    }
+
+    private function getMessageText(array $content): string
+    {
+        $messageContent = '';
+
+        foreach ($content as $item)
+            if ($item->type === 'text')
+                $messageContent .= $item->text->value;
+
+        return $messageContent;
     }
 
     /**
