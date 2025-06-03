@@ -13,7 +13,7 @@ class NotificationController extends Controller
         'explain_in_class_please' => '🤔 Explicar en clase',
     ];
 
-    public function getUserNotifications()
+    public function getUserNotifications(): array
     {
         // Get the last 10 validated or rejected doubts form chats of the user.
         $userId = auth()->user()->id;
