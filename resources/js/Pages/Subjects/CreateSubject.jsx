@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import ErrorList from "@/Components/ErrorList.jsx";
 import MatriculationList from "@/Pages/Subjects/Partials/MatriculationList.jsx";
+import Loader from "@/Components/Loader.jsx";
 
 const CreateSubject = ({students}) => {
     const {data, setData, post, processing, errors} = useForm({
@@ -52,7 +53,7 @@ const CreateSubject = ({students}) => {
                            onChange={(e) => setData('files', e.target.files)}
                            multiple/>
                 </label>
-                <Deferred fallback={<p>Cargando lista de alumnos...</p>} data={"students"}>
+                <Deferred fallback={<Loader>Cargando lista de alumnos...</Loader>} data={"students"}>
                     <MatriculationList 
                         students={students}
                         studentIds={data.studentIds}
