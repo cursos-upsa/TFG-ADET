@@ -1,4 +1,4 @@
-import {Link, usePage, router} from '@inertiajs/react';
+import {Link, router, usePage} from '@inertiajs/react';
 import NotificationsModal from './Partials/NotificationsModal';
 
 const AuthenticatedLayout = ({children}) => {
