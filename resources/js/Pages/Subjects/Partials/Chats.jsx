@@ -2,7 +2,7 @@ import {Link, router} from "@inertiajs/react";
 
 const Chats = ({chats, subjectId}) => {
 
-    const deleteChat= (e, chatId) => {
+    const deleteChat = (e, chatId) => {
         e.stopPropagation();  // Avoid triggering the parent's <li> click event.
 
         router.delete(route('chats.destroy', {chatId}), {

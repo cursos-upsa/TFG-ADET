@@ -20,8 +20,10 @@ const DoubtDashboard = ({subjectId, subjectName, doubts}) => {
     return (
         <AuthenticatedLayout>
             <Head title={"Dudas pendientes"}/>
+
             <h1>{subjectName}</h1>
             <h2>Dudas pendientes</h2>
+
             <form onSubmit={submit}>
                 <button type={"submit"} disabled={processing}>
                     Guardar

@@ -20,9 +20,11 @@ const Subject = ({
     return (
         <AuthenticatedLayout>
             <Head title={name}/>
+
             <h1>{name}</h1>
             <p><small>Creación: {created_at}</small></p>
             <p>{description}</p>
+
             <hr/>
 
             <JustProfessor>

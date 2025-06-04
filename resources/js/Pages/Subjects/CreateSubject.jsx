@@ -1,3 +1,5 @@
+// noinspection JSCheckFunctionSignatures
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Deferred, Head, useForm} from "@inertiajs/react";
 import ErrorList from "@/Components/ErrorList.jsx";
@@ -25,7 +27,9 @@ const CreateSubject = ({students}) => {
     return (
         <AuthenticatedLayout>
             <Head title={"Crear asignatura"}/>
+
             <h1>Crear una asignatura</h1>
+
             <form onSubmit={submit}>
                 <label>
                     Nombre de la asignatura:
@@ -54,7 +58,7 @@ const CreateSubject = ({students}) => {
                            multiple/>
                 </label>
                 <Deferred fallback={<Loader>Cargando lista de alumnos...</Loader>} data={"students"}>
-                    <MatriculationList 
+                    <MatriculationList
                         students={students}
                         studentIds={data.studentIds}
                         onStudentsChange={handleStudentsChange}/>

@@ -17,12 +17,10 @@ const MatriculationList = ({students, studentIds, onStudentsChange}) => {
                 {students?.map(({id, name}) => (
                     <li key={id}>
                         <label>
-                            <input
-                                type="checkbox"
-                                name="studentIds"
-                                value={id}
-                                onChange={handleCheckboxChange}
-                            />
+                            <input type="checkbox"
+                                   name="studentIds"
+                                   value={id}
+                                   onChange={handleCheckboxChange}/>
                             {name}
                         </label>
                     </li>
