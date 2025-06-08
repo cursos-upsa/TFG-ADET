@@ -40,9 +40,6 @@ const Welcome = ({auth}) => (
                 de dudas y la comunicación entre alumnos y profesores.
             </p>
         </main>
-        <footer>
-            Enrique Redondo Cortés, 2025
-        </footer>
     </GuestLayout>
 );
 
