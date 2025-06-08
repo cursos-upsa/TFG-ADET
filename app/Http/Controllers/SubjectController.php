@@ -62,6 +62,7 @@ class SubjectController extends Controller
                 ) AS last_activity_formatted
                 SQL
                 )
+                ->orderBy('last_activity', 'desc')
                 ->get(), 'chats'),
         ];
 
