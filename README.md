@@ -9,8 +9,6 @@ Aplicación web desarrollada para el Trabajo Fin de Grado para el grado en Admin
 
 ### Vídeo demostrativo
 
-[EN PROCESO]
+[![Vídeo demostrativo. TFG ADET - Enrique Redondo Cortés](https://img.youtube.com/vi/dxgHth86NZY/hqdefault.jpg)](https://youtu.be/dxgHth86NZY "Vídeo demostrativo. TFG ADET - Enrique Redondo Cortés")
 
-### Capturas de pantalla
-
-[...]
+[Ver el vídeo en YouTube](https://youtu.be/dxgHth86NZY)
