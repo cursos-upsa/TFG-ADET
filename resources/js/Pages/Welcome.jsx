@@ -30,7 +30,15 @@ const Welcome = ({auth}) => (
             </nav>
         </header>
         <main>
-            ¡Bienvenido!
+            <h1>Plataforma de apoyo al estudio con inteligencia artificial</h1>
+            <p>
+                Esta aplicación web es el resultado práctico del Trabajo Fin de
+                Grado <small>Desarrollo de un sistema inteligente de apoyo al
+                proceso pedagógico</small>. Su propósito es explorar el uso de la
+                inteligencia artificial generativa como una herramienta de
+                asistencia en el ámbito educativo, facilitando la resolución
+                de dudas y la comunicación entre alumnos y profesores.
+            </p>
         </main>
         <footer>
             Enrique Redondo Cortés, 2025
